@@ -97,11 +97,12 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
 :: 2. Select node version
 call :SelectNodeVersion
 
-:: 3. Install npm packages
+:: 3. Install npm packages (MODIFIED)
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
   call :ExecuteCmd !NPM_CMD! install --production
   call :ExecuteCmd !NPM_CMD! run build
+  call xcopy %DEPLOYMENT_TARGET%\public %DEPLOYMENT_TARGET% 
   IF !ERRORLEVEL! NEQ 0 goto error
   popd
 )

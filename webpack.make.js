@@ -201,7 +201,7 @@ module.exports = function makeWebpackConfig(options) {
         // Render index.html
         config.plugins.push(
             new HtmlWebpackPlugin({
-                template: './index.html',
+                template: './src/index.html',
                 inject: 'body'
             })
         )
