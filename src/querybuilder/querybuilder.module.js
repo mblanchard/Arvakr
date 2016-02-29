@@ -5,5 +5,5 @@ import QueryBuilderCtrl from './querybuilder.ctrl.js';
 
 export default angular.module('app.querybuilder', [])
     .config(routing)
-    .controller('QueryBuilderCtrl', QueryBuilderCtrl)
+    .controller('QueryBuilderCtrl',['$scope', '$q', '$timeout', 'dataservice',QueryBuilderCtrl] )
     .name;
