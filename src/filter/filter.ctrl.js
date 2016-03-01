@@ -16,9 +16,9 @@ export default function FilterCtrl($scope, $q, $timeout, dataservice) {
     vm.editor.setTheme('ace/theme/github');
     vm.editor.setValue([
         '{'
-      , ' "language": "JSON",'
+      , ' "attribute": "temperature",'
       , ' "foo": "bar",'
-      , ' "trailing": "comma",'
+      , ' "trailing comma": "to show linting",'
       , '}'
       ].join('\n')
     );
