@@ -5,6 +5,7 @@ var webpack = require('webpack');
 var autoprefixer = require('autoprefixer-core');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
 
 module.exports = function makeWebpackConfig(options) {
     /**
@@ -86,7 +87,9 @@ module.exports = function makeWebpackConfig(options) {
         // Initialize module
     config.module = {
         preLoaders: [],
-        loaders: [{
+        loaders: [
+          {test: /\.js$/, loader: 'ng-annotate'},
+          {
             // JS LOADER
             // Reference: https://github.com/babel/babel-loader
             // Transpile .js files using babel-loader
@@ -95,7 +98,7 @@ module.exports = function makeWebpackConfig(options) {
             loader: 'babel?optional[]=runtime',
             exclude: /node_modules/
         },
-        {test: /\.js$/, loader: 'ng-annotate'},
+        
          {
             // ASSET LOADER
             // Reference: https://github.com/webpack/file-loader
@@ -209,10 +212,18 @@ module.exports = function makeWebpackConfig(options) {
 
     // Add build specific plugins
     if (BUILD) {
+      
+        config.plugins.push(
+          new ngAnnotatePlugin({
+              add: true,
+              // other ng-annotate options here
+          })
+        )
+        
         config.plugins.push(
             // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
             // Only emit files when there are no errors
-            new webpack.NoErrorsPlugin()
+            new webpack.NoErrorsPlugin(),
 
             // Reference: http://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
             // Dedupe modules in the output
@@ -220,8 +231,11 @@ module.exports = function makeWebpackConfig(options) {
 
             // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
             // Minify all javascript, switch loaders to minimizing mode
-            //new webpack.optimize.UglifyJsPlugin()
+            new webpack.optimize.UglifyJsPlugin({
+              mangle: false
+            })
         )
+
     }
 
     /**

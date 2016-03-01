@@ -5,6 +5,6 @@ import FilterCtrl from './filter.ctrl.js';
 
 
 export default angular.module('app.filter', [])
-  .config(routing)
-  .controller('FilterCtrl',FilterCtrl)
+  .config(['$stateProvider',routing])
+  .controller('FilterCtrl',['$scope', '$q', '$timeout', 'dataservice',FilterCtrl])
   .name;
