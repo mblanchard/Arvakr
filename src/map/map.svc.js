@@ -1,9 +1,8 @@
 export default function MapService(dataservice) {
   
-  
-  //getColumns
-  dataservice.addEndpoint('getColumns',  function($http, $q, moduleId) {
-    return $http.get(dataservice.generateUrl('/api/column/' + moduleId)).
+  //getMarkers
+  dataservice.addEndpoint('getMarkers',  function($http, $q) {
+    return $http.get(dataservice.generateUrl('/api/markers')).
       then(success)
       .catch(fail);
   
