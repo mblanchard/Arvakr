@@ -1,4 +1,4 @@
-import FilterService from './filter.svc.js';
+import FilterService from './filter.data.js';
 import ace from 'brace';
 import 'brace/mode/json';
 import 'brace/theme/github';

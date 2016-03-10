@@ -11,18 +11,20 @@ import ngMaterial from 'angular-material'
 
 import { routing, routingEventsLogger, theming } from './app.config';
 
-import common from './common/common.module';
+
 import core from './core/core.module';
+import gmap from './gmap/gmap.module';
 
 
 import map from './map/map.module';
 import filter from './filter/filter.module';
+import marker from'./marker/marker.module';
 
 
 const DEBUG = false;
 
 const app = angular
-    .module('app', [uirouter, common,core,map,filter,ngMaterial])
+    .module('app', [uirouter,core,gmap,map,filter,ngMaterial])
     .config(['$mdThemingProvider',theming])
     .config(['$urlRouterProvider','$stateProvider',routing])
 
