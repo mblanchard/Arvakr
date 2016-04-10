@@ -9,24 +9,26 @@ import ngAnimate from 'angular-animate/angular-animate.min.js';
 import ngAria from 'angular-aria';
 import ngMaterial from 'angular-material'
 
-import { routing, routingEventsLogger, theming } from './app.config';
+import { routing, routingEventsLogger, theming,addInterceptors } from './app.config';
 
 
 import core from './core/core.module';
 import gmap from './gmap/gmap.module';
 
-
 import map from './map/map.module';
 import filter from './filter/filter.module';
-import marker from'./marker/marker.module';
+//import marker from'./marker/marker.module';
 
+import layout from './layout/layout.module';
 
 const DEBUG = false;
 
 const app = angular
-    .module('app', [uirouter,core,gmap,map,filter,ngMaterial])
+    .module('app', [uirouter,core,gmap,map,filter,ngMaterial,layout])
     .config(['$mdThemingProvider',theming])
     .config(['$urlRouterProvider','$stateProvider',routing])
+    .config(['$httpProvider',addInterceptors])
+    
 
 
 

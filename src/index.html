@@ -7,18 +7,7 @@
     <base href="/">
   </head>   
   <body layout="column">
-    <md-toolbar layout="row" ng-cloak>
-      <div class="md-toolbar-tools">
-        <span><a href="/#/map">Arvakr</a></span>
-        <span flex=""></span>
-        <md-button href='/#/filter'>
-          Config
-        </md-button>
-      </div>
-    </md-toolbar>
- 
-
-    <div class="container" ui-view layout="row"></div>
-
+    <top-nav></top-nav>
+    <div id="container" class="container" ui-view layout="row"></div>
   </body>
 </html>

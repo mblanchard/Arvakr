@@ -1,7 +1,7 @@
 
 import 'angular-signalr';
 
-export default function MarkerHub($rootScope, Hub, $timeout) { 
+export default function MarkerHub($rootScope, Hub, $timeout, markerCache) { 
   
   var markerData = {};
   var hub = {};
@@ -14,7 +14,10 @@ export default function MarkerHub($rootScope, Hub, $timeout) {
     
     hub = new Hub('marker', {
       listeners: {
-        'markerData': function(dataset,markerId,time,value) {
+        'marker': function(datasetId,markerId, location){
+          markerData[datasetId][markerId] = {'location':location};
+        },
+        'markerData': function(datasetId,markerId,time,value) {
           
         }
       }  

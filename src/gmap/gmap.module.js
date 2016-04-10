@@ -13,5 +13,5 @@ export default angular
         v: '3.22', //defaults to latest 3.X anyhow
         libraries: 'geometry,visualization'
     })}])
-    .factory('gmapservice', ['dataservice', 'uiGmapGoogleMapApi',gmapservice])
+    .factory('gmapservice', ['dataservice', 'uiGmapGoogleMapApi','uiGmapObjectIterators',gmapservice])
     .name;

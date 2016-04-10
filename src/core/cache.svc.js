@@ -1,11 +1,10 @@
 
 export default function CacheService() { 
   //Initialize Cache
+  var cache = {};
   var cacheKeys = retrieveCacheFromLocalStorage('cacheKeys') || [];
   var persistedKeys = retrieveCacheFromLocalStorage('persistedKeys') || [];
-  var cache = {};
   var CACHE_PREFIX = "APP_";
-  
   
   (function() {
     persistedKeys.forEach(function(key){
@@ -20,14 +19,15 @@ export default function CacheService() {
   }
   
   function retrieveCacheFromLocalStorage(key) {
-    cache[key] = JSON.parse(localStorage[CACHE_PREFIX + key]);
+    var cachedValue = localStorage[CACHE_PREFIX + key];
+    cache[key] = cachedValue===null || cachedValue===undefined? null: JSON.parse(cachedValue);
     return cache[key];
   }
   //END: Local Storage
   
   //Methods
   function get (key) {
-    return cache[key] || (cacheKeys.indexOf(key) > -1? {}: null);
+    return cache[key] || (persistedKeys.indexOf(key) > -1? cache[key]=retrieveCacheFromLocalStorage(key): null); //Review: Is distinguishing cache miss w/ key defined vs. undef valuable?
   }
   
   function set (key, value) {

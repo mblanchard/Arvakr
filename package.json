@@ -45,6 +45,7 @@
     "postcss-loader": "^0.5.1",
     "raw-loader": "^0.5.1",
     "sass-loader": "^3.1.1",
+    "satellizer": "^0.14.0",
     "style-loader": "^0.12.3",
     "webpack": "^1.9.11",
     "webpack-dev-server": "^1.9.0"

@@ -7,7 +7,11 @@ export function routing($urlRouterProvider, $stateProvider) {
             abstract: true,
             template: '<div ui-view layout="column" flex></div>'
         })
+}
 
+
+export function addInterceptors($httpProvider) {
+  $httpProvider.interceptors.push('authinterceptor');
 }
 
 export function routingEventsLogger($rootScope) {
@@ -40,7 +44,7 @@ export function routingEventsLogger($rootScope) {
 export function theming($mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('blue', {
-      'default': '900'
+      'default': '800'
     })
     .accentPalette('teal', {
       'default': '800'

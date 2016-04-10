@@ -1,5 +1,4 @@
-<div class="row">
-  <h1>Map View</h1>
+<div class="row" id="map-container"  flex>
   <ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>  
     <ui-gmap-markers ng-if="vm.map.showMarkers"
                 doCluster="vm.map.doCluster"
@@ -7,9 +6,8 @@
                 coords="'coords'"
                 idkey="'key'"
                 chunk="200"
+                events="vm.markerEvents"
                 >
     </ui-gmap-markers>
   </ui-gmap-google-map>
-  
-  <style></style>
 </div>
