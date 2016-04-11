@@ -10,7 +10,7 @@ import authinterceptor from './auth/authinterceptor';
 export default angular
     .module('app.core', [])
     .factory('cacheservice',cacheservice)
-    .factory('busyservice',busyservice)
+    .factory('busyservice',['$timeout',busyservice])
     .factory('dataservice', ['$http','$q','busyservice',dataservice])
     .factory('authcache',['cacheservice',authcache])
     .factory('authservice', ['$q','$httpParamSerializer','dataservice','cacheservice','authcache',authservice])

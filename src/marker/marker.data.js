@@ -1,24 +1,15 @@
 export default function InitMarkerApi(dataservice) {
   
-  //getMarkers
-  dataservice.addEndpoint('getMarkers', 
+  //getWeatherMarkers
+  dataservice.addEndpoint('retrieving weather markers', 
     {
       method: 'get',
-      url: '/api/markers',
+      url: 'api/weather/nodes',
     }
-  );   
-  
-   //getMarkers
-  dataservice.addEndpoint('getMarkerIcons', 
-    {
-      method: 'get',
-      url: '/api/markerIcons',
-    }
-  );  
-  
+  );    
+   
   return {
-    getMarkers: function() { dataservice.request('getMarkers');},
-    getMarkerIcons: function() {dataservice.request('getMarkerIcons')}
+    getWeatherMarkers: function() { return dataservice.request('retrieving weather markers');},
   }  
 
 }

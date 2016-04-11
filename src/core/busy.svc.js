@@ -24,7 +24,7 @@ export default function BusyService($timeout) {
         busyEl.parentElement.removeChild(busyEl);
         spinnerExists = false;
       }
-    }, 500);
+    }, 600);
   }
   
   var service = {
