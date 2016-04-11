@@ -3,7 +3,7 @@ export default function DataService($http, $q, busyservice) {
     
   var endpoints = {}
   //var DEFAULT_API_BASE_URL = "http://localhost:8485/";
-  var DEFAULT_API_BASE_URL = "http://alsvior.azurewebsites.net/";
+  var DEFAULT_API_BASE_URL = "https://alsvior.azurewebsites.net/";
   
   function generateUrl(relativeUrl) {
     return DEFAULT_API_BASE_URL + relativeUrl;
