@@ -2,8 +2,8 @@ export default function AuthCache(cacheservice) {
   
     cacheservice.addKey('session', true);
     
-    function setSession(session) {
-     cacheservice.set('session',session);
+    function setSession(session, cache_expires) {
+     cacheservice.set('session',session, cache_expires);
     }
     
     function getSession() {

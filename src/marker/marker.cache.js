@@ -3,18 +3,18 @@ export default class MarkerCache {
   constructor(cacheservice) {
     cacheservice.addKey('datasets', false);
     cacheservice.addKey('markerIcons', false);
+    cacheservice.addKey('weatherMarkers', true);
     this._cacheservice = cacheservice;
-    this._markers = {};
     this._markerdata = {};
   }
   
   
-  get markers() {
-    return this._markers;
+  get weatherMarkers() {
+    return this._cacheservice.get('weatherMarkers');
   }
   
-  set markers(value) {
-    this._markers = value;
+  set weatherMarkers(value) {
+    this._cacheservice.set('weatherMarkers', value, Date.now() + 7200000); //2 hours
   }
     
   get markerdata() {

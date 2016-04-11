@@ -11,17 +11,19 @@ export default function MarkerService($rootScope, $timeout,dataservice,cacheserv
   
   
   function initWeather() {
+    if (markerCache.weatherMarkers !== null && markerCache.weatherMarkers !== undefined) return;
+    
     return markerApi.getWeatherMarkers().then(function(markers){
       if(markers) {
-        markerCache.markers['weather'] = markers.map(function(m,i){ 
+        markerCache.weatherMarkers = markers.map(function(m,i){ 
           return { 'longitude': m.Longitude, 'latitude': m.Latitude, key: 'weather_' + i} 
-        });
+        });   
       }
     })
   }
   
-  function getMarkers(dataset) {
-    return markerCache.markers['weather'];
+  function getWeatherMarkers() {
+    return markerCache.weatherMarkers;
   }
   
   function getMarkerData(key) {
@@ -32,7 +34,7 @@ export default function MarkerService($rootScope, $timeout,dataservice,cacheserv
    
   return {
     initialize: initialize,
-    getMarkers: getMarkers,
+    getWeatherMarkers: getWeatherMarkers,
     getMarkerData: getMarkerData
   }
 };

@@ -10,9 +10,7 @@ export default function AuthService($q, $httpParamSerializer, dataservice, cache
   function isAuthenticated() {
     return (
       currentSession != null 
-      && currentSession.accessToken != null 
-      && currentSession.expires != null 
-      && currentSession.expires > Date.now()
+      && currentSession.accessToken != null
     )
   }
   
@@ -38,8 +36,8 @@ export default function AuthService($q, $httpParamSerializer, dataservice, cache
       if(result && result.access_token) {
         console.log("Retrieved Access Token: "+result.access_token);
         var expireTime = (result.expires_in * 1000) /*sec>>ms*/ + Date.now();
-        currentSession = {"username": username, "accessToken": result.access_token, "expires": expireTime }   
-        authcache.setSession(currentSession);
+        currentSession = {"username": username, "accessToken": result.access_token}   
+        authcache.setSession(currentSession, expireTime);
         return true; 
       }
       return false;
