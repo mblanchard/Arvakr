@@ -5,7 +5,6 @@ export default function CacheService() {
   var cache = {};
   cache.cacheKeys = retrieveCacheFromLocalStorage('cacheKeys') || [];
   cache.persistedKeys = retrieveCacheFromLocalStorage('persistedKeys') || [];
-
   
   cache.persistedKeys.forEach(function(key){
     retrieveCacheFromLocalStorage(key);

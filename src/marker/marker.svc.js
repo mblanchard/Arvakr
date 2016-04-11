@@ -7,8 +7,7 @@ export default function MarkerService($rootScope, $timeout,dataservice,cacheserv
 
   function initialize() {
     return initWeather();
-  }
-  
+  } 
   
   function initWeather() {
     if (markerCache.weatherMarkers !== null && markerCache.weatherMarkers !== undefined) return;
@@ -26,15 +25,45 @@ export default function MarkerService($rootScope, $timeout,dataservice,cacheserv
     return markerCache.weatherMarkers;
   }
   
-  function getMarkerData(key) {
+  function getDailyWeatherData(key) {
     var args = key.split('_');
-    var markerData = markerCache.markers[args[0]][args[1]];
-    return markerData;
+    var markerData = markerCache.weatherMarkers[args[1]];
+    if(!markerData) return null;
+    var timestamp = Math.floor(stripTime(Date.now()).getTime()/1000);
+    var lat = markerData.latitude; var lon = markerData.longitude;
+    markerApi.getDailyWeatherData(lat,lon,timestamp).then(function(data){
+      return data;
+    })
+  }
+  
+    function getRecentDailyWeatherData(key) {
+    var args = key.split('_');
+    var markerData = markerCache.weatherMarkers[args[1]];
+    if(!markerData) return;
+    var lat = markerData.latitude; var lon = markerData.longitude;
+    return markerApi.getRecentDailyWeatherData(lat,lon).then(function(data){
+      return data;
+    })
+  }
+  
+  function stripTime(date) {
+    var normdate = new Date(date), y = normdate.getUTCFullYear(), m = normdate.getUTCMonth(), d = normdate.getUTCDate();
+    return new Date(y, m, d);
+  }
+  
+  function getMarkerData(key) {
+    return getRecentDailyWeatherData(key).then(
+      function(data){
+        return data;
+      }
+    );
   }
    
   return {
     initialize: initialize,
     getWeatherMarkers: getWeatherMarkers,
+    getDailyWeatherData: getDailyWeatherData,
+    getRecentDailyWeatherData: getRecentDailyWeatherData,
     getMarkerData: getMarkerData
   }
 };

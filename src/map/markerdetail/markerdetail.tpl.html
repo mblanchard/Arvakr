@@ -6,8 +6,12 @@
       </md-toolbar>
       <md-content style="max-width: 350px; max-height: 500px;">
         <div style="max-width: 350px; max-height: 500px; margin-left: 20px; margin-right: 20px;">
-        <h5>Latitude: {{vm.markerDetails.latitude/1000000}}</h5>
-        <h5>Longitude: {{vm.markerDetails.longitude/1000000}}</h5>
+          
+          <md-list ng-cloak>
+            <md-list-item ng-repeat="(key, value) in vm.markerDetails">
+              <p> <strong>{{key}}</strong><br/>{{value}} </p>
+            </md-list-item>
+          </md-list>
         </div>
       </md-content>
     <md-dialog-actions layout="row">

@@ -19,12 +19,13 @@ export default function DataService($http, $q, busyservice) {
     };
   }
   
-  var request = function(key, data) {
+  var request = function(key, data, url) {
     busyservice.startBusy(key + '...');
+    
     var endpoint = endpoints[key];
     if(!endpoint) return defaultFailure();
-    endpoint.config.data = data;   
-    return $http(endpoint.config).then(endpoint.success).catch(endpoint.failure);
+    var config = { 'url': endpoint.config.url + (url != undefined? url:""), 'method':endpoint.config.method, 'data':data, 'headers':endpoint.config.headers}  
+    return $http(config).then(endpoint.success).catch(endpoint.failure);
   }
   
   function defaultSuccess(response){busyservice.stopBusy();  return response.data;}

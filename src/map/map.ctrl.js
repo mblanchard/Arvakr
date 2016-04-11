@@ -5,7 +5,6 @@ import sunImage from './../assets/images/happysun.gif'
 
 export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gmapservice, markerservice) {
 
-  //var mapEndpoints = AddMapEndpoints(dataservice); 
   const vm = this;
   
   activate();
@@ -21,14 +20,16 @@ export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gma
   vm.markerEvents = {
     click: function(marker, eventName, model) {
       vm.selectedMarker = marker;
-       vm.markerDetails = retrieveMarkerData(marker.key);
-      $mdDialog.show({
-        scope: $scope,
-        preserveScope: true,
-        template: markerDetailTemplate,
-        parent: angular.element(document.body),
-        clickOutsideToClose: true
-      });
+      retrieveMarkerData(marker.key).then(function(details) {
+        vm.markerDetails = details;
+        $mdDialog.show({
+          scope: $scope,
+          preserveScope: true,
+          template: markerDetailTemplate,
+          parent: angular.element(document.body),
+          clickOutsideToClose: true
+        })
+      })
     }
   }
     
@@ -62,7 +63,9 @@ export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gma
   }
   
   function retrieveMarkerData(key) {
-    return markerservice.getMarkerData(key);
+    return markerservice.getMarkerData(key).then(
+      function(data){return data;}
+    );
   }
   
   return vm;
