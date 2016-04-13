@@ -13,12 +13,9 @@ export default function topNav() {
     activate();
   
     function activate() {
-      var promises = [];
-      return $q.all(promises).then(function () {
-        $interval(function () {
-          updateNotifications();
-        }, interval);
-      });
+      $interval(function () {
+        updateNotifications();
+      }, interval);
     }
 
     var updateNotifications = function() {
