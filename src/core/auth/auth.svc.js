@@ -34,15 +34,13 @@ export default function AuthService($q, $httpParamSerializer, dataservice, cache
   function login(username, password) {
     return authApi.requestToken(username, password).then(function(result) {
       if(result && result.access_token) {
-        console.log("Retrieved Access Token: "+result.access_token);
         var expireTime = (result.expires_in * 1000) /*sec>>ms*/ + Date.now();
         currentSession = {"username": username, "accessToken": result.access_token}   
-        authcache.setSession(currentSession, expireTime);
+        authcache.setSession(currentSession, expireTime);    
         return true; 
       }
       return false;
-    });
-   
+    });  
   }
   
   return {

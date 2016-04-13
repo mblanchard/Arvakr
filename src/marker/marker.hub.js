@@ -1,7 +1,7 @@
 
-import 'angular-signalr';
+import 'angular-signalr-hub';
 
-export default function MarkerHub($rootScope, Hub, $timeout, markerCache) { 
+export default function InitMarkerHub($rootScope, $timeout, Hub, markerCache) { 
   
   var markerData = {};
   var hub = {};

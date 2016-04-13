@@ -7,7 +7,7 @@ export default function GmapsService(dataservice, uiGmapGoogleMapApiProvider, ui
   
   var map = { 
     showMarkers: true,
-    doCluster: true,
+    doCluster: false,
     center: { latitude: 41.9, longitude: -87.8 }, 
     zoom: 11,
   };

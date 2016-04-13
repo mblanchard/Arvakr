@@ -38,21 +38,35 @@ export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gma
   }
   
   function renderMarkers() { 
+    var nodes = []
+    //weather
     var markers = markerservice.getWeatherMarkers();
-    if(markers && markers.length !== undefined) {
-      var nodes = []
+
+    if(markers && markers.length !== undefined) {      
       for(var i = 0; i <markers.length; i++){
         nodes.push({
           'coords': {'longitude': markers[i].longitude/1000000,'latitude': markers[i].latitude/1000000}, //Fixed-point >> floating-point
           'key': markers[i].key,
           'icon': sunImage
         });
-      }
-      $timeout(function () {
-        vm.mapNodes = nodes;
-        return;
-      });
+      }     
     }
+    
+    //inverters
+    var inverterMarkers = markerservice.getInverterMarkers();
+    if(inverterMarkers && inverterMarkers.length !== undefined) {     
+      for(var i = 0; i <inverterMarkers.length; i++){
+        nodes.push({
+          'coords': {'longitude': inverterMarkers[i].longitude/1000000,'latitude': inverterMarkers[i].latitude/1000000}, //Fixed-point >> floating-point
+          'key': inverterMarkers[i].key,
+          //'icon': sunImage
+        });
+      }     
+    }
+    $timeout(function () {
+      vm.mapNodes = nodes;
+      return;
+    });
   }
    
   function drawMap() {
@@ -61,6 +75,7 @@ export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gma
       vm.mapNodes = { length: 0 };
     });
   }
+
   
   function retrieveMarkerData(key) {
     return markerservice.getMarkerData(key).then(

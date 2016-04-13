@@ -4,6 +4,7 @@ export default class MarkerCache {
     cacheservice.addKey('datasets', false);
     cacheservice.addKey('markerIcons', false);
     cacheservice.addKey('weatherMarkers', true);
+    cacheservice.addKey('inverterMarkers', true);
     this._cacheservice = cacheservice;
     this._markerdata = {};
   }
@@ -15,6 +16,14 @@ export default class MarkerCache {
   
   set weatherMarkers(value) {
     this._cacheservice.set('weatherMarkers', value, Date.now() + 7200000); //2 hours
+  }
+  
+  get inverterMarkers() {
+    return this._cacheservice.get('inverterMarkers');
+  }
+  
+  set inverterMarkers(value) {
+    this._cacheservice.set('inverterMarkers', value, Date.now() + 7200000); //2 hours
   }
     
   get markerdata() {

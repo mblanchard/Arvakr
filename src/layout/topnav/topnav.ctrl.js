@@ -23,6 +23,10 @@ export default function topNav() {
       $state.go('filter');
     }
     
+    vm.refreshCache = function() {
+      localStorage.clear();
+    }
+    
     vm.login = function () {
       $mdDialog.show({
         scope: $scope,
@@ -45,16 +49,14 @@ export default function topNav() {
     };
     
   }
-    
-
-    
-    return {
-      bindToController: true,
-      controller: TopNavController,
-      controllerAs: 'vm',
-      restrict: 'EA',
-      scope: {
-          'navline': '='
+      
+  return {
+    bindToController: true,
+    controller: TopNavController,
+    controllerAs: 'vm',
+    restrict: 'EA',
+    scope: {
+      'navline': '='
     },
     template: template
   } 
