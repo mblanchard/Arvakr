@@ -1,14 +1,42 @@
+//material icons
+import emptyCloudIcon from './../../assets/images/ic_filter_drama_white_48px.svg' //partly cloudy
+import snowflakeIcon from './../../assets/images/ic_ac_unit_white_48px.svg' //snow, sleet
+import pinwheelIcon from './../../assets/images/ic_toys_white_48px.svg' //windy
+import sunIcon from './../../assets/images/ic_brightness_7_white_48px.svg' //sunny
+import cloudIcon from './../../assets/images/ic_cloud_white_48px.svg' //cloudy
+import dropletIcon from './../../assets/images/ic_opacity_white_48px.svg' //rain
+import fogIcon from './../../assets/images/ic_texture_white_48px.svg' //fog
+import warningIcon from './../../assets/images/ic_report_problem_white_48px.svg' //unknown
+
 export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdDialog) {
   const vm = this;
   var apiMarkerDetails = $scope.$parent.vm.markerDetails;
   vm.markerDetails = [];
+  vm.iconName = warningIcon; //will be overwritten by getIcon
 
-  for (var detailName in apiMarkerDetails) {
-  	if (detailName == "Time" || detailName == "Icon") continue;
-  	vm.markerDetails.push({
-  		"key": detailName.split(/(?=[A-Z])/).join(' '),
-  		"value": convertToDisplayString(detailName, apiMarkerDetails[detailName])
-  	});
+	activate();
+ 
+  function activate() {
+    var promises = [init()];
+    return $q.all(promises).then(function () {
+	  	var img = document.createElement('img');
+			img.src = getIcon(vm.iconName);
+			document.getElementById('icon-div').appendChild(img);
+		});
+  }
+
+  function init(){
+  	for (var detailName in apiMarkerDetails) {
+	  	if (detailName == "Time") continue;
+	  	else if (detailName == "Icon") {
+	  		vm.iconName = apiMarkerDetails[detailName];
+	  		continue;
+	  	}
+	  	vm.markerDetails.push({
+	  		"key": detailName.split(/(?=[A-Z])/).join(' '),
+	  		"value": convertToDisplayString(detailName, apiMarkerDetails[detailName])
+	  	});
+		}
   }
 
   vm.showChart = function(){
@@ -20,6 +48,31 @@ export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdD
   }
 
   return vm;
+}
+
+//possible icon values given by https://developer.forecast.io/docs/v2
+function getIcon(iconName) {
+	switch(iconName) {
+		case "clear-day":
+		case "clear-night":
+			return sunIcon;
+		case "rain":
+			return dropletIcon;
+		case "snow":
+		case "sleet":
+			return snowflakeIcon;
+		case "wind":
+			return pinwheelIcon;
+		case "fog":
+			return fogIcon;
+		case "cloudy":
+			return cloudIcon;
+		case "partly-cloudy-day":
+		case "partly-cloudy-night":
+			return emptyCloudIcon;
+		default:
+			return warningIcon;
+	}
 }
 
 function convertToDisplayString(key, value) {
@@ -51,7 +104,7 @@ function convertToDisplayString(key, value) {
 		case "CloudCover":
 		case "Humidity":
 		case "PrecipProbability":
-			return value*100 + "%";
+			return (value*100).toFixed(2) + "%";
 		case "Pressure":
 			return value + " mb";
 		case "Visibility":
