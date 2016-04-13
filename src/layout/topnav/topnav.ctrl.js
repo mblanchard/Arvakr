@@ -18,12 +18,21 @@ export default function topNav() {
         $interval(function () {
           updateNotifications();
         }, interval);
-        // vm.notifications = notificationservice.getNotifications();
       });
     }
 
     var updateNotifications = function() {
-      vm.notifications = notificationservice.getNotifications();
+      const degreeSymbol = "\u00B0";
+
+      var notificationData = notificationservice.getNotifications();
+      vm.notifications = [];
+      for (var i = 0; i < notificationData.length; i++) {
+        var notification = notificationData[i];
+        var latitude = notification.lat > 0 ? notification.lat/1000000 + degreeSymbol + " N" : -1*notification.lat/1000000 + degreeSymbol + " S";
+        var longitude = notification.lon > 0 ? notification.lon/1000000 + degreeSymbol + " E" : -1*notification.lon/1000000 + degreeSymbol + " W";
+        var time = (new Date(notification.time*1000)).toLocaleTimeString();
+        vm.notifications.push("Error at (" + latitude + ", " + longitude + ") at " + time);
+      }
     }
 
     vm.goToFilter = function () {
