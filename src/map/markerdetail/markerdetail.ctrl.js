@@ -4,7 +4,7 @@ export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdD
   vm.markerDetails = [];
 
   for (var detailName in apiMarkerDetails) {
-  	if (detailName == "Time") continue;
+  	if (detailName == "Time" || detailName == "Icon") continue;
   	vm.markerDetails.push({
   		"key": detailName.split(/(?=[A-Z])/).join(' '),
   		"value": convertToDisplayString(detailName, apiMarkerDetails[detailName])
@@ -34,6 +34,7 @@ function convertToDisplayString(key, value) {
 		case "ApparentTemperatureMin":	
 		case "TemperatureMax":
 		case "TemperatureMin":
+		case "DewPoint":
 			return value + degreeSymbol + " F";
 		case "ApparentTemperatureMaxTime":
 		case "ApparentTemperatureMinTime":
@@ -42,6 +43,23 @@ function convertToDisplayString(key, value) {
 		case "TemperatureMaxTime":
 		case "TemperatureMinTime":
 			return (new Date(value*1000)).toLocaleTimeString();
+		case "PrecipIntensity":
+		case "PrecipIntensityMax":
+			return value + " in/hr";
+		case "Ozone":
+			return value + " DU";
+		case "CloudCover":
+		case "Humidity":
+		case "PrecipProbability":
+			return value*100 + "%";
+		case "Pressure":
+			return value + " mb";
+		case "Visibility":
+			return value + " mi";
+		case "WindBearing":
+			return value + degreeSymbol;
+		case "WindSpeed":
+			return value + " mph";
   	default:
 		return value;
 	}
