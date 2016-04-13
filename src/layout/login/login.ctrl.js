@@ -12,6 +12,15 @@ export default function LoginCtrl($scope, $q, $timeout, authservice, $mdDialog) 
         $scope.$parent.vm.username = vm.username;
         $mdDialog.hide();
       }       
+      else {
+        $mdDialog.show(
+          $mdDialog.alert()
+            .clickOutsideToClose(true)
+            .title('Unsuccessful Login')
+            .content('Please try again')
+            .ok('Ok')
+        );
+      }
     });
   }
   
