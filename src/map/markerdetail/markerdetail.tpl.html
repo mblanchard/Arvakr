@@ -2,14 +2,16 @@
       <md-toolbar>
         <div class="md-toolbar-tools">
           <h2>Marker Details</h2>
+          <span flex></span>
+          <div id="icon-div"></div>
         </div>
       </md-toolbar>
       <md-content style="max-width: 350px; max-height: 500px;">
         <div style="max-width: 350px; max-height: 500px; margin-left: 20px; margin-right: 20px;">
           
           <md-list ng-cloak>
-            <md-list-item ng-repeat="(key, value) in vm.markerDetails">
-              <p> <strong>{{key}}</strong><br/>{{value}} </p>
+            <md-list-item ng-repeat="detail in vm.markerDetails">
+              <p> <strong>{{detail.key}}</strong><br/>{{detail.value}}</p>
             </md-list-item>
           </md-list>
         </div>

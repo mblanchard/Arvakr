@@ -30,7 +30,7 @@
       </md-menu-content>
     </md-menu>
     
-    <md-button href='/#/notifications'>
+    <md-button ng-if='vm.isAuthenticated != true' href='/#/notifications'>
       <div>
         <span id="notification-text" class='toolbar-item__text'>notifications</span>
         <svg class='toolbar-item__icon' fill="#CCD" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -38,6 +38,23 @@
         </svg>
       </div>
     </md-button>
+
+    <md-menu ng-if='vm.isAuthenticated == true'>
+      <md-button ng-click="$mdOpenMenu($event)">
+        <div>
+          <span id="notification-text" class='toolbar-item__text'>notifications</span>
+          <svg class='toolbar-item__icon' fill="#CCD" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+          </svg>
+        </div>
+      </md-button>
+      <md-menu-content style="margin-top:50px" width="4">
+        <md-menu-item ng-repeat="notification in vm.notifications">
+          <md-button ng-click="">{{notification}}</md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+
     <md-button href='/#/filter'>
       <div>
         <span id="filter-text" class='toolbar-item__text'>filter</span>
