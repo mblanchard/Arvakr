@@ -3,6 +3,7 @@ import markerDetailTemplate from './markerdetail/markerdetail.tpl.html'
 import sunImage from './../assets/images/happysun.gif'
 import flashIcon from './../assets/images/flash_icon.png'
 import infoIcon from './../assets/images/ic_info_outline_black_48px.svg'
+import weatherIcon from './../assets/images/rsz_slight_drizzle.png'
 
 export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gmapservice, markerservice) {
 
@@ -48,7 +49,7 @@ export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gma
         nodes.push({
           'coords': {'longitude': markers[i].longitude/1000000,'latitude': markers[i].latitude/1000000}, //Fixed-point >> floating-point
           'key': markers[i].key,
-          'icon': infoIcon 
+          'icon': weatherIcon 
         });
       }     
     }
