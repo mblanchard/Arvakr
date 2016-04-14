@@ -50,7 +50,7 @@
       </md-button>
       <md-menu-content style="margin-top:50px" width="4">
         <md-menu-item ng-repeat="notification in vm.notifications">
-          <md-button ng-click="">{{notification}}</md-button>
+          <md-button ng-click="vm.selectNotification(notification)">{{notification.description}}</md-button>
         </md-menu-item>
       </md-menu-content>
     </md-menu>

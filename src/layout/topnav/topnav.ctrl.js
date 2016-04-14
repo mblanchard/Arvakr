@@ -3,9 +3,9 @@ import loginTemplate from './../login/login.tpl.html'
 
 export default function topNav() {
   
-  TopNavController.$inject = ['$scope', '$q', '$mdDialog', '$interval', 'dataservice','authservice', 'notificationservice'];
+  TopNavController.$inject = ['$scope', '$q', '$mdDialog', '$interval', 'dataservice','authservice', 'notificationservice', 'gmapservice'];
   /* @ngInject */
-  function TopNavController($scope, $q, $mdDialog, $interval, dataservice, authservice, notificationservice) {
+  function TopNavController($scope, $q, $mdDialog, $interval, dataservice, authservice, notificationservice, gmapservice) {
     var vm = this;
     vm.isAuthenticated = authservice.isAuthenticated();
     vm.username = vm.isAuthenticated? authservice.getUser(): 'Guest';
@@ -25,11 +25,15 @@ export default function topNav() {
       vm.notifications = [];
       for (var i = 0; i < notificationData.length; i++) {
         var notification = notificationData[i];
-        var latitude = notification.lat > 0 ? notification.lat/1000000 + degreeSymbol + " N" : -1*notification.lat/1000000 + degreeSymbol + " S";
-        var longitude = notification.lon > 0 ? notification.lon/1000000 + degreeSymbol + " E" : -1*notification.lon/1000000 + degreeSymbol + " W";
-        var time = (new Date(notification.time*1000)).toLocaleTimeString();
-        vm.notifications.push("Error at (" + latitude + ", " + longitude + ") at " + time);
+        notification.fpLat = notification.lat/1000000;
+        notification.fpLon = notification.lon/1000000
+        vm.notifications.push(notification);
       }
+    }
+    
+    vm.selectNotification = function(notification) {
+      console.log(notification);
+      gmapservice.centerOn(notification.fpLat,notification.fpLon, 12);
     }
 
     vm.goToFilter = function () {
