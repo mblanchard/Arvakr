@@ -2,6 +2,7 @@
 export default function DataService($http, $q, busyservice) { 
     
   var endpoints = {}
+  var sockets = {}
   //var DEFAULT_API_BASE_URL = "http://localhost:8485/";
   var DEFAULT_API_BASE_URL = "https://alsvior.azurewebsites.net/";
   
@@ -17,6 +18,14 @@ export default function DataService($http, $q, busyservice) {
       success: success || defaultSuccess,
       failure: failure || defaultFailure
     };
+  }
+  
+  var addSocket = function(key, url, onmessage, onopen) {
+    if(sockets[key] !== undefined) { return;}
+    var newSocket = new WebSocket(generateUrl(url));
+    newSocket.onopen = onopen;
+    newSocket.onmessage = onmessage;
+    sockets[key] = newSocket;
   }
   
   var request = function(key, data, url) {
@@ -35,6 +44,7 @@ export default function DataService($http, $q, busyservice) {
     endpoints: endpoints,
     addEndpoint: addEndpoint,
     request: request,
-    generateUrl: generateUrl
+    generateUrl: generateUrl,
+    addSocket: addSocket
   }
 }
