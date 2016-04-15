@@ -44,7 +44,7 @@ export function routingEventsLogger($rootScope) {
 export function theming($mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('blue', {
-      'default': '800'
+      'default': '900'
     })
     .accentPalette('teal', {
       'default': '800'

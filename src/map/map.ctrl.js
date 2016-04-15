@@ -4,6 +4,7 @@ import sunImage from './../assets/images/happysun.gif'
 import flashIcon from './../assets/images/flash_icon.png'
 import infoIcon from './../assets/images/ic_info_outline_black_48px.svg'
 import weatherIcon from './../assets/images/rsz_slight_drizzle.png'
+import inverterIcon from './../assets/images/power.svg'
 
 export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gmapservice, markerservice) {
 
@@ -61,7 +62,7 @@ export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gma
         nodes.push({
           'coords': {'longitude': inverterMarkers[i].longitude/1000000,'latitude': inverterMarkers[i].latitude/1000000}, //Fixed-point >> floating-point
           'key': inverterMarkers[i].key,
-          'icon': flashIcon
+          'icon': inverterIcon
         });
       }     
     }

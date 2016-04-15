@@ -1,13 +1,19 @@
 
-export default function DataService($http, $q, busyservice) { 
+export default function DataService($http, $q, $timeout, busyservice) { 
     
   var endpoints = {}
   var sockets = {}
-  //var DEFAULT_API_BASE_URL = "http://localhost:8485/";
+  //var DEFAULT_API_BASE_URL = "https://localhost:8485/";
+  //var DEFAULT_WS_BASE_URL = "ws://localhost:8485/";
   var DEFAULT_API_BASE_URL = "https://alsvior.azurewebsites.net/";
+  var DEFAULT_WS_BASE_URL = "wss://alsvior.azurewebsites.net/";
   
   function generateUrl(relativeUrl) {
     return DEFAULT_API_BASE_URL + relativeUrl;
+  }
+  
+  function generateWSUrl(relativeUrl) {
+    return DEFAULT_WS_BASE_URL + relativeUrl;
   }
 
   var addEndpoint = function(key, config, success, failure) {
@@ -20,12 +26,26 @@ export default function DataService($http, $q, busyservice) {
     };
   }
   
+  var onSocketClose = function(key,url,onmessage, onopen, retries) {
+      $timeout(function () {
+        console.log("Attempting to reopen socket: " + key +"...");
+        var socket = addSocket(key,url,onmessage, onopen)
+        if(socket.readyState > 1 && retries < 3) {
+          onSocketClose(key,url,onmessage, onopen, retries++)
+        }
+      }, 2000);    
+  }
+  
   var addSocket = function(key, url, onmessage, onopen) {
-    if(sockets[key] !== undefined) { return;}
-    var newSocket = new WebSocket(generateUrl(url));
-    newSocket.onopen = onopen;
+    if(sockets[key] !== undefined && sockets.readyState <= 1) { return sockets[key];}
+    var newSocket = new WebSocket(generateWSUrl(url));
+    newSocket.onopen = onopen; 
+    newSocket.onclose = function(){
+      onSocketClose(key,url,onmessage,onopen,0);
+    }
     newSocket.onmessage = onmessage;
     sockets[key] = newSocket;
+    return sockets[key];
   }
   
   var request = function(key, data, url) {
@@ -42,6 +62,7 @@ export default function DataService($http, $q, busyservice) {
   
   return {
     endpoints: endpoints,
+    sockets: sockets,
     addEndpoint: addEndpoint,
     request: request,
     generateUrl: generateUrl,
