@@ -1,9 +1,10 @@
 import template from './sidenav.tpl.html'
+import markerDetailTemplate from './../../map/markerdetail/markerdetail.tpl.html'
 
 export default function sideNav() {
   
-  SideNavController.$inject = ['$scope','$q','$timeout','dataservice','$mdSidenav','markerservice','gmapservice'];
-  function SideNavController($scope, $q, $timeout, dataservice, $mdSidenav, markerservice,gmapservice) {
+  SideNavController.$inject = ['$scope','$q','$timeout','dataservice','$mdSidenav','$mdDialog','markerservice','gmapservice'];
+  function SideNavController($scope, $q, $timeout, dataservice, $mdSidenav, $mdDialog, markerservice,gmapservice) {
     const vm = this; 
     
     vm.close = function () {
@@ -16,6 +17,19 @@ export default function sideNav() {
     vm.selectMarker = function(marker) {
       console.log(marker);
       gmapservice.centerOn(marker.latitude/1000000,marker.longitude/1000000, 12);
+      $mdSidenav('right').close().then(function () {
+        
+        markerservice.getMarkerData(marker.key).then(function(details) {
+        vm.markerDetails = details;
+        $mdDialog.show({
+          scope: $scope,
+          preserveScope: true,
+          template: markerDetailTemplate,
+          parent: angular.element(document.body),
+          clickOutsideToClose: true
+        })
+      })
+      });
     }
     
     
