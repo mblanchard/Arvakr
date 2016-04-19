@@ -1,11 +1,9 @@
 import InitMarkerApi from './marker.data.js'
 import MarkerCache from './marker.cache.js'
-//import InitMarkerHub from './marker.hub'
 
-export default function MarkerService($q,$rootScope,$timeout,dataservice,cacheservice) { 
+export default function MarkerService($q,$rootScope,$timeout,dataservice,cacheservice,authservice) { 
   var markerApi = InitMarkerApi(dataservice);
   var markerCache = new MarkerCache(cacheservice);
-  //var markerHub = InitMarkerHub($rootScope, $timeout, Hub, markerCache);
 
   function initialize() {  
     var promises = [initWeather(),initInverters()];
@@ -37,14 +35,17 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,cachese
       }
     })
   }
-  
-  
+   
   function getWeatherMarkers() {
-    return markerCache.weatherMarkers;
+    if(authservice.isAuthenticated()) {
+      return markerCache.weatherMarkers;
+    }
   }
   
   function getInverterMarkers() {
-    return markerCache.inverterMarkers;
+    if(authservice.isAuthenticated()) {
+      return markerCache.inverterMarkers;
+    }
   }
   
   function getDailyWeatherData(key) {
@@ -67,8 +68,7 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,cachese
     })
   }
   
-  function getRecentDailyWeatherData(key) {
-    
+  function getRecentDailyWeatherData(key) { 
     var markerData = markerCache.weatherMarkers[key];
     if(!markerData) return;
     var lat = markerData.latitude; var lon = markerData.longitude;

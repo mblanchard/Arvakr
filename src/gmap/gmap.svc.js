@@ -9,6 +9,7 @@ export default function GmapsService(dataservice, uiGmapGoogleMapApiProvider, ui
     doCluster: false,
     center: { latitude: 41.9, longitude: -87.8 }, 
     zoom: 11,
+    control: {}
   };
   
   function centerOn(lat, lon, zoom) {

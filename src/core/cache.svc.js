@@ -14,15 +14,13 @@ export default function CacheService() {
 
   //Local Storage
   function updateCacheInLocalStorage(key, cache_expires) {
-    if(cache_expires) cache[key].cache_expires = cache_expires //set expiration if provided
-    
     localStorage[CACHE_PREFIX + key] = JSON.stringify(cache[key]);
   }
   
   function retrieveCacheFromLocalStorage(key) {
     var cachedValue = localStorage[CACHE_PREFIX + key];
     var parsedValue = cachedValue===null || cachedValue===undefined? null: JSON.parse(cachedValue);
-    if(parsedValue !== null && (parsedValue.cache_expires === undefined || parsedValue.cache_expires > Date.now()) ) { //validate either no expiration or not yet expired
+    if(parsedValue !== null && (parsedValue.expires === undefined || parsedValue.expires > Date.now()) ) { //validate either no expiration or not yet expired
       cache[key] = parsedValue;
     }
     else {
@@ -34,11 +32,22 @@ export default function CacheService() {
   
   //Methods
   function get (key) {
-    return cache[key] || (cache.persistedKeys.indexOf(key) > -1? cache[key]=retrieveCacheFromLocalStorage(key): null);
+    if(cache[key] == null || cache[key] == undefined) { 
+      if(cache.persistedKeys.indexOf(key) > -1) {
+        cache[key] =retrieveCacheFromLocalStorage(key);
+      }
+      else {
+        return null;
+      }
+    }
+    if(cache[key] != null && cache[key] != undefined) {
+      return cache[key].value;
+    }
+    return null;
   }
   
-  function set (key, value, expires) {
-    cache[key] = value;
+  function set (key, value, expires) {  
+    cache[key] = {value: value, expires: expires};
     if(cache.persistedKeys.indexOf(key) > -1){
       updateCacheInLocalStorage(key, expires);
     }

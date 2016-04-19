@@ -4,5 +4,5 @@ import markerservice from './marker.svc.js';
 
 export default angular
     .module('app.marker',[])
-    .factory('markerservice', ['$q','$rootScope', '$timeout','dataservice','cacheservice',markerservice])
+    .factory('markerservice', ['$q','$rootScope', '$timeout','dataservice','cacheservice','authservice',markerservice])
     .name;

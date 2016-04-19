@@ -21,14 +21,10 @@ export default function NotificationService(dataservice) {
       return notifications;
   };
   
-
-  
   var onmessage = function(messageEvent) {
     var args = messageEvent.data.split('_');
     notifications.unshift({lat: args[0], lon: args[1], time: args[2], description:args[3]});
-    if(notifications.length >  NOTIFICATION_MAX) notifications.pop();
-    console.log(messageEvent.data)
-    
+    if(notifications.length >  NOTIFICATION_MAX) notifications.pop();  
   }
   
   var sockets = InitNotificationSocket(dataservice, onmessage)

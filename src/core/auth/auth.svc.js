@@ -1,7 +1,6 @@
 import InitAuthApi from './auth.data.js';
 import AuthCache from './auth.cache.js';
 
-
 export default function AuthService($q, $httpParamSerializer, dataservice, cacheservice,authcache) { 
    
   var authApi = InitAuthApi($httpParamSerializer,dataservice);
@@ -14,6 +13,25 @@ export default function AuthService($q, $httpParamSerializer, dataservice, cache
     )
   }
   
+  var authenticatedRequestQueue = [];
+  
+  var addToRequestQueue = function(authenticatedRequest) {
+    authenticatedRequestQueue.push(authenticatedRequest);
+  }
+  
+  var processRequestQueue = function() {
+    var length = authenticatedRequestQueue.length;
+    if(length > 0)
+    $q.all(authenticatedRequestQueue).then(function() {
+      
+    })
+    .finally(function(){ authenticatedRequestQueue.slice(0,length); }) //remove all queued requests as of processing start
+    
+    if(authenticatedRequestQueue.length > 0) { //were new pending authenticated requests queued up after processing/before 
+      processRequestQueue();
+    }
+  }
+  
   function getCachedToken() {
     return isAuthenticated()? currentSession.accessToken: null;
   }
@@ -21,7 +39,6 @@ export default function AuthService($q, $httpParamSerializer, dataservice, cache
   function getUser() {
     return isAuthenticated()? currentSession.username: null;
   }
-
   
   function register(username, password, confirmPassword) {
     authApi.register(username, password, confirmPassword);
@@ -36,7 +53,9 @@ export default function AuthService($q, $httpParamSerializer, dataservice, cache
       if(result && result.access_token) {
         var expireTime = (result.expires_in * 1000) /*sec>>ms*/ + Date.now();
         currentSession = {"username": username, "accessToken": result.access_token}   
-        authcache.setSession(currentSession, expireTime);    
+        authcache.setSession(currentSession, expireTime);  
+        processRequestQueue();  
+        
         return true; 
       }
       return false;
@@ -49,6 +68,7 @@ export default function AuthService($q, $httpParamSerializer, dataservice, cache
     getUser: getUser,
     register: register,
     login: login,
-    logout: logout
+    logout: logout,
+    addToRequestQueue: addToRequestQueue
   }
 }

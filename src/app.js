@@ -1,4 +1,3 @@
-
 //Styles
 import 'angular-material/angular-material.min.css';
 import './assets/style/app.css';
@@ -32,12 +31,7 @@ const app = angular
     .config(['$mdThemingProvider',theming])
     .config(['$urlRouterProvider','$stateProvider',routing])
     .config(['$httpProvider',addInterceptors])
-    
-
-
 
 if (DEBUG) {
-    app
-        .run(routingEventsLogger)
-    ;
+    app.run(routingEventsLogger);
 }

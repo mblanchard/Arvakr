@@ -1,8 +1,7 @@
 
 export default function BusyService($timeout) { 
-  var spinnerExists = false;
+  var spinnerExists = true;
   var busy = false;
-
 
   function startBusy(text) {
     busy = true;
@@ -27,10 +26,11 @@ export default function BusyService($timeout) {
     }, 600);
   }
   
+  stopBusy();
+  
   var service = {
     startBusy: startBusy,
     stopBusy: stopBusy
   };
-  
   return service;        
 };

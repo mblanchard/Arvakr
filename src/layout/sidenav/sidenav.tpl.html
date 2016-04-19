@@ -1,0 +1,18 @@
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+  <md-toolbar class="md-theme-light">
+    <h1 class="md-toolbar-tools">Markers</h1>
+  </md-toolbar>
+  <md-content  layout-padding>
+    <md-button ng-click="vm.close()" class="md-primary">
+      Close Sidenav Right
+    </md-button>
+    
+    <md-list class="md-dense" flex>
+      <md-list-item class="md-3-line" ng-repeat="marker in vm.markers" ng-click="vm.selectMarker(marker)">      
+        {{marker.key}}
+      </md-list-item>
+    </md-list>
+    
+
+  </md-content>
+</md-sidenav>

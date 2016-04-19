@@ -1,12 +1,9 @@
-import AddMapEndpoints from './map.data.js';
 import markerDetailTemplate from './markerdetail/markerdetail.tpl.html'
 import sunImage from './../assets/images/happysun.gif'
-import flashIcon from './../assets/images/flash_icon.png'
-import infoIcon from './../assets/images/ic_info_outline_black_48px.svg'
 import weatherIcon from './../assets/images/rsz_slight_drizzle.png'
 import inverterIcon from './../assets/images/power.svg'
 
-export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gmapservice, markerservice) {
+export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gmapservice, markerservice, authservice) {
 
   const vm = this;
   
@@ -34,10 +31,6 @@ export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gma
         })
       })
     }
-  }
-    
-  vm.login = function () {
-      
   }
   
   function renderMarkers() { 
@@ -75,10 +68,10 @@ export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gma
   function drawMap() {
     $timeout(function () {
       vm.map = gmapservice.map;
+      console.log(vm.map);
       vm.mapNodes = { length: 0 };
     });
   }
-
   
   function retrieveMarkerData(key) {
     return markerservice.getMarkerData(key).then(

@@ -3,7 +3,7 @@ export default function DataService($http, $q, $timeout, busyservice) {
     
   var endpoints = {}
   var sockets = {}
-  //var DEFAULT_API_BASE_URL = "https://localhost:8485/";
+  //var DEFAULT_API_BASE_URL = "http://localhost:8485/";
   //var DEFAULT_WS_BASE_URL = "ws://localhost:8485/";
   var DEFAULT_API_BASE_URL = "https://alsvior.azurewebsites.net/";
   var DEFAULT_WS_BASE_URL = "wss://alsvior.azurewebsites.net/";
@@ -30,10 +30,7 @@ export default function DataService($http, $q, $timeout, busyservice) {
       $timeout(function () {
         console.log("Attempting to reopen socket: " + key +"...");
         var socket = addSocket(key,url,onmessage, onopen)
-        if(socket.readyState > 1 && retries < 3) {
-          onSocketClose(key,url,onmessage, onopen, retries++)
-        }
-      }, 2000);    
+      }, (Math.random() + 1) * 2000);
   }
   
   var addSocket = function(key, url, onmessage, onopen) {

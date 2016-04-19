@@ -22,8 +22,7 @@ export default function InitAuthApi($httpParamSerializer,dataservice) {
   
   //Exposed Endpoints/Mapping
   return {
-    register: function(username, password, confirmPassword) { 
-      
+    register: function(username, password, confirmPassword) {     
       var data = {
         "userName":username, 
         "password":password, 

@@ -9,7 +9,6 @@ export default class MarkerCache {
     this._markerdata = {};
   }
   
-  
   get weatherMarkers() {
     return this._cacheservice.get('weatherMarkers');
   }
@@ -45,6 +44,7 @@ export default class MarkerCache {
   get markerIcons() {
     return this._cacheservice('markerIcons');
   }
+  
   set markerIcons(value) {
     this._cacheservice.set('markerIcons',value);
   }

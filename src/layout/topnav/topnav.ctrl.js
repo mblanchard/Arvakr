@@ -3,9 +3,9 @@ import loginTemplate from './../login/login.tpl.html'
 
 export default function topNav() {
   
-  TopNavController.$inject = ['$scope', '$q', '$mdDialog', '$interval', 'dataservice','authservice', 'notificationservice', 'gmapservice'];
+  TopNavController.$inject = ['$scope', '$q', '$mdDialog','$mdSidenav', '$interval', 'dataservice','authservice', 'notificationservice', 'gmapservice'];
   /* @ngInject */
-  function TopNavController($scope, $q, $mdDialog, $interval, dataservice, authservice, notificationservice, gmapservice) {
+  function TopNavController($scope, $q, $mdDialog,$mdSidenav, $interval, dataservice, authservice, notificationservice, gmapservice) {
     var vm = this;
     vm.isAuthenticated = authservice.isAuthenticated();
     vm.username = vm.isAuthenticated? authservice.getUser(): 'Guest';
@@ -19,8 +19,6 @@ export default function topNav() {
     }
 
     var updateNotifications = function() {
-      const degreeSymbol = "\u00B0";
-
       var notificationData = notificationservice.getNotifications();
       vm.notifications = [];
       for (var i = 0; i < notificationData.length; i++) {
@@ -54,6 +52,12 @@ export default function topNav() {
       });
     }
     
+    vm.viewFilter = function() {
+              $mdSidenav('right').open()
+          .then(function () {
+          });
+    }
+    
     vm.logout = function() {
       authservice.logout();
       vm.isAuthenticated = false;
@@ -63,8 +67,7 @@ export default function topNav() {
     vm.openMenu = function(ev) {
       originatorEv = ev;
       $mdOpenMenu(ev);
-    };
-    
+    };   
   }
       
   return {
