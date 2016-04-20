@@ -190,12 +190,13 @@ module.exports = function makeWebpackConfig(options) {
         // Disabled when in test mode or not in build mode
         new ExtractTextPlugin('[name].[hash].css?sourceMap', {
             disable: !BUILD || TEST
-        }),
-
+        })//,
+        /*
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
         })
+        */
     ];
 
     // Skip rendering index.html in test mode

@@ -28,6 +28,15 @@ export default function InitMarkerApi(dataservice, onInverterMessage, onInverter
       url: 'api/inverter/nodes'
     }
   );
+  
+    dataservice.addEndpoint('retrieving recent inverter data',
+    { 
+      method: 'get',
+      url: 'api/inverter'
+    }
+  );
+  
+  
   var inverterSocket = dataservice.addSocket('inverter', 'api/inverter', onInverterMessage, onInverterOpen);
     
   return {

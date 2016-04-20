@@ -17,8 +17,11 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,cachese
       if(args[3] < 0.3 && args[3] > 0.15) { //warning
         markerCache.inverterMarkers[matchingIndex].icon = inverterWarningIcon;
       }
-      if(args[3] <= 0.15) { //warning
+      else if(args[3] <= 0.15) { //warning
         markerCache.inverterMarkers[matchingIndex].icon = inverterCriticalIcon;
+      }
+      else {
+        markerCache.inverterMarkers[matchingIndex].icon = inverterIcon;
       }
     }
   } 
@@ -90,7 +93,7 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,cachese
   
   function getRecentInverterData(key) {
     var markerData = markerCache.inverterMarkers[key];
-    if(!markerData) return;
+    if(!markerData) return $q.when('no marker data available');
     var lat = markerData.latitude; var lon = markerData.longitude;
     return markerApi.getRecentInverterData(lat,lon).then(function(data){
       return data;
@@ -114,10 +117,10 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,cachese
   function getMarkerData(key) {
     var args = key.split('_');
     if(args[0] == 'weather') {
-      return getRecentDailyWeatherData(args[1]).then( function(data){ return data; } );  
+      return getRecentDailyWeatherData(args[1]).then( function(data){ return data; }).catch(function(){return; });  
     }
     else if(args[0] == 'inverter') {
-      return getRecentInverterData(args[1]).then( function(data) { return data; });
+      return getRecentInverterData(args[1]).then( function(data) { return data; }).catch(function(){return; });
     }  
   }
    

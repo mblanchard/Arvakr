@@ -9,7 +9,6 @@ import angular from 'angular';
 import uirouter from 'angular-ui-router';
 import ngAnimate from 'angular-animate/angular-animate.min.js';
 import ngAria from 'angular-aria';
-import SignalR from 'angular-signalr-hub';
 
 import ngMaterial from 'angular-material'
 
@@ -27,7 +26,7 @@ import layout from './layout/layout.module';
 const DEBUG = false;
 
 const app = angular
-    .module('app', [uirouter,core,gmap,marker,map,filter,ngMaterial,SignalR,layout])
+    .module('app', [uirouter,core,gmap,marker,map,filter,ngMaterial,layout])
     .config(['$mdThemingProvider',theming])
     .config(['$urlRouterProvider','$stateProvider',routing])
     .config(['$httpProvider',addInterceptors])
