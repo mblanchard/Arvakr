@@ -1,9 +1,30 @@
 import InitMarkerApi from './marker.data.js'
 import MarkerCache from './marker.cache.js'
+import weatherIcon from './../assets/images/rsz_slight_drizzle.png'
+import inverterIcon from './../assets/images/power.svg'
+import inverterWarningIcon from './../assets/images/power_warning.svg'
+import inverterCriticalIcon from './../assets/images/power_critical.svg'
 
 export default function MarkerService($q,$rootScope,$timeout,dataservice,cacheservice,authservice) { 
-  var markerApi = InitMarkerApi(dataservice);
   var markerCache = new MarkerCache(cacheservice);
+  
+  function onInverterMessage(messageEvent){
+    var args = messageEvent.data.split('_');
+    var matchingIndex = markerCache.inverterMarkers.findIndex(
+      function(inv){return inv.latitude == args[0] && inv.longitude == args[1]}
+    );
+    if(matchingIndex !== -1) {
+      if(args[3] < 0.3 && args[3] > 0.15) { //warning
+        markerCache.inverterMarkers[matchingIndex].icon = inverterWarningIcon;
+      }
+      if(args[3] <= 0.15) { //warning
+        markerCache.inverterMarkers[matchingIndex].icon = inverterCriticalIcon;
+      }
+    }
+  } 
+  
+  var markerApi = InitMarkerApi(dataservice, onInverterMessage);
+
 
   function initialize() {  
     var promises = [initWeather(),initInverters()];
@@ -18,7 +39,11 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,cachese
     return markerApi.getWeatherMarkers().then(function(markers){
       if(markers) {
         markerCache.weatherMarkers = markers.map(function(m,i){ 
-          return { 'longitude': m.Longitude, 'latitude': m.Latitude, key: 'weather_' + i} 
+          return  {  
+                    longitude: m.Longitude, latitude: m.Latitude, 
+                    coords:{'longitude': m.Longitude/1000000,'latitude': m.Latitude/1000000}, 
+                    key: 'weather_' + i, description: 'Weather #' + i, icon: weatherIcon
+                  } 
         });   
       }
     })
@@ -29,8 +54,12 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,cachese
     
     return markerApi.getInverterMarkers().then(function(markers){
       if(markers) {
-        markerCache.inverterMarkers = markers.map(function(m,i){ 
-          return { 'longitude': m.Longitude, 'latitude': m.Latitude, key: 'inverter_' + i} 
+        markerCache.inverterMarkers = markers.map(function(m,i){
+          return  {  
+                    longitude: m.Longitude, latitude: m.Latitude, 
+                    coords:{'longitude': m.Longitude/1000000,'latitude': m.Latitude/1000000}, 
+                    key: 'inverter_' + i, description: 'Inverter #' + i, icon: inverterIcon
+                  }          
         });   
       }
     })

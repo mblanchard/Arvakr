@@ -18,7 +18,7 @@ export default function NotificationService(dataservice) {
   }];
 
   var getNotifications = function() {
-      return notifications;
+    return notifications;
   };
   
   var onmessage = function(messageEvent) {

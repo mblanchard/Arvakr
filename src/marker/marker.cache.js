@@ -4,7 +4,7 @@ export default class MarkerCache {
     cacheservice.addKey('datasets', false);
     cacheservice.addKey('markerIcons', false);
     cacheservice.addKey('weatherMarkers', true);
-    cacheservice.addKey('inverterMarkers', true);
+    cacheservice.addKey('inverterMarkers', false);
     this._cacheservice = cacheservice;
     this._markerdata = {};
   }

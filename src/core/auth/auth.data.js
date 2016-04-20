@@ -12,9 +12,7 @@ export default function InitAuthApi($httpParamSerializer,dataservice) {
     {
       method: 'POST',
       url: 'token',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     }
   );  
   //END Add Endpoints

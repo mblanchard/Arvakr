@@ -8,10 +8,10 @@ export default function sideNav() {
     const vm = this; 
     
     vm.close = function () {
-        // Component lookup should always be available since we are not using `ng-if`
-        $mdSidenav('right').close()
-          .then(function () {
-          });
+      // Component lookup should always be available since we are not using `ng-if`
+      $mdSidenav('right').close().then(function () {
+        
+      });
     }
     
     vm.selectMarker = function(marker) {
@@ -20,27 +20,28 @@ export default function sideNav() {
       $mdSidenav('right').close().then(function () {
         
         markerservice.getMarkerData(marker.key).then(function(details) {
-        vm.markerDetails = details;
-        $mdDialog.show({
-          scope: $scope,
-          preserveScope: true,
-          template: markerDetailTemplate,
-          parent: angular.element(document.body),
-          clickOutsideToClose: true
+          vm.markerDetails = details;
+          $mdDialog.show({
+            scope: $scope,
+            preserveScope: true,
+            template: markerDetailTemplate,
+            parent: angular.element(document.body),
+            clickOutsideToClose: true
+          })
         })
-      })
       });
     }
-    
-    
+       
     function activate() {
       var promises = [markerservice.initialize()];
       return $q.all(promises).then(function () {
-        vm.markers = markerservice.getInverterMarkers();
+        vm.datasets = [];
+        vm.datasets.push( { label: 'Weather', markers:markerservice.getWeatherMarkers() })
+        vm.datasets.push( { label: 'Inverters', markers:markerservice.getInverterMarkers() })
       });
     }
-    activate();
     
+    activate();   
     return vm;
   }
   

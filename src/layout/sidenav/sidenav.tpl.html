@@ -1,16 +1,26 @@
 <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
   <md-toolbar class="md-theme-light">
-    <h1 class="md-toolbar-tools">Markers</h1>
+    <h1 class="md-toolbar-tools">Markers
+      <div>
+      <span flex=""></span>
+      <span>
+      <md-button ng-click="vm.close()" class="md-primary" style="margin-bottom: 5px">
+        close
+      </md-button>
+      </span>
+      </div>
+    </h1>
   </md-toolbar>
   <md-content  layout-padding>
-    <md-button ng-click="vm.close()" class="md-primary">
-      Close Sidenav Right
-    </md-button>
     
     <md-list class="md-dense" flex>
-      <md-list-item class="md-3-line" ng-repeat="marker in vm.markers" ng-click="vm.selectMarker(marker)">      
-        {{marker.key}}
-      </md-list-item>
+      <div ng-repeat="dataset in vm.datasets">
+        <md-divider ></md-divider>
+        <md-subheader class="md-no-sticky"><h2>{{dataset.label}}</h2></md-subheader>
+        <md-list-item class="md-3-line" ng-repeat="marker in dataset.markers" ng-click="vm.selectMarker(marker)">      
+          {{marker.description}}
+        </md-list-item>
+      </div>
     </md-list>
     
 

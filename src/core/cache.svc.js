@@ -8,8 +8,7 @@ export default function CacheService() {
   
   cache.persistedKeys.forEach(function(key){
     retrieveCacheFromLocalStorage(key);
-  });
-  
+  }); 
   //END: Initialize Cache
 
   //Local Storage
