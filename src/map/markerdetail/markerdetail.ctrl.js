@@ -113,6 +113,8 @@ function convertToDisplayString(key, value) {
 			return value + degreeSymbol;
 		case "WindSpeed":
 			return value + " mph";
+		case "Performance":
+			return (value*15).toFixed(2) + " kW";
   	default:
 		return value;
 	}
