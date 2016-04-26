@@ -1,6 +1,5 @@
 import InitNotificationSocket from './notification.data.js'
 
-
 export default function NotificationService(dataservice) { 
   var NOTIFICATION_MAX = 5;
   var notifications = [

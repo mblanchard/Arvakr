@@ -1,8 +1,7 @@
 import InitAuthApi from './auth.data.js';
 import AuthCache from './auth.cache.js';
 
-export default function AuthService($q, $httpParamSerializer, dataservice, cacheservice,authcache) { 
-   
+export default function AuthService($q, $httpParamSerializer, dataservice, cacheservice,authcache) {   
   var authApi = InitAuthApi($httpParamSerializer,dataservice);
   var currentSession = authcache.getSession() || {};
   
@@ -13,21 +12,15 @@ export default function AuthService($q, $httpParamSerializer, dataservice, cache
     )
   }
   
-  var authenticatedRequestQueue = [];
-  
-  var addToRequestQueue = function(authenticatedRequest) {
-    authenticatedRequestQueue.push(authenticatedRequest);
-  }
-  
   var processRequestQueue = function() {
-    var length = authenticatedRequestQueue.length;
+    var length = authcache.authenticatedRequestQueue.length;
     if(length > 0)
-    $q.all(authenticatedRequestQueue).then(function() {
+    $q.all(authcache.authenticatedRequestQueue).then(function() {
       
     })
-    .finally(function(){ authenticatedRequestQueue.slice(0,length); }) //remove all queued requests as of processing start
+    .finally(function(){ authcache.authenticatedRequestQueue.slice(0,length); }) //remove all queued requests as of processing start
     
-    if(authenticatedRequestQueue.length > 0) { //were new pending authenticated requests queued up after processing/before 
+    if(authcache.authenticatedRequestQueue.length > 0) { //were new pending authenticated requests queued up after processing/before 
       processRequestQueue();
     }
   }
@@ -54,8 +47,7 @@ export default function AuthService($q, $httpParamSerializer, dataservice, cache
         var expireTime = (result.expires_in * 1000) /*sec>>ms*/ + Date.now();
         currentSession = {"username": username, "accessToken": result.access_token}   
         authcache.setSession(currentSession, expireTime);  
-        processRequestQueue();  
-        
+        processRequestQueue();      
         return true; 
       }
       return false;
@@ -68,7 +60,6 @@ export default function AuthService($q, $httpParamSerializer, dataservice, cache
     getUser: getUser,
     register: register,
     login: login,
-    logout: logout,
-    addToRequestQueue: addToRequestQueue
+    logout: logout
   }
 }

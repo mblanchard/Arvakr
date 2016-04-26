@@ -1,5 +1,4 @@
 import markerDetailTemplate from './markerdetail/markerdetail.tpl.html'
-import sunImage from './../assets/images/happysun.gif'
 import weatherIcon from './../assets/images/rsz_slight_drizzle.png'
 import inverterIcon from './../assets/images/power.svg'
 

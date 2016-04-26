@@ -10,14 +10,16 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,cachese
   
   function onInverterMessage(messageEvent){
     var args = messageEvent.data.split('_');
+    if(markerCache == null || markerCache.inverterMarkers == null) return;
+    
     var matchingIndex = markerCache.inverterMarkers.findIndex(
       function(inv){return inv.latitude == args[0] && inv.longitude == args[1]}
     );
     if(matchingIndex !== -1) {
-      if(args[3] < 0.3 && args[3] > 0.15) { //warning
+      if(args[3] < 0.2 && args[3] > 0.1) { //warning
         markerCache.inverterMarkers[matchingIndex].icon = inverterWarningIcon;
       }
-      else if(args[3] <= 0.15) { //warning
+      else if(args[3] <= 0.1) { //warning
         markerCache.inverterMarkers[matchingIndex].icon = inverterCriticalIcon;
       }
       else {

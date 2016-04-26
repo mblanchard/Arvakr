@@ -1,6 +1,4 @@
-html,body { 
-  height: 100%; margin: 0px; padding: 0px; 
-}
+html,body { height: 100%; margin: 0px; padding: 0px; }
 
 #map-container {
   top:56px;left:0px;right:0px;bottom:0px;
@@ -11,16 +9,6 @@ html,body {
   height: 100%; 
   width: 100%;
   position: absolute;
-}
-
-.toolbar-item__icon {
-  width:24px;
-  height:32px;
-  vertical-align: top;
-}
-
-.toolbar-item__text {
-
 }
 
 #editor-container {
@@ -35,9 +23,3 @@ html,body {
   border-top: 1px solid #777;
   border-bottom: 1px solid #777;
 }
-
-.md-button {
-  min-width: 48px;
-  min-height: 24px;
-  padding-top: 8px;
-}    
