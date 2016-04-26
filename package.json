@@ -8,7 +8,9 @@
     "dev-compiled": "webpack-dev-server --content-base public/",
     "test": "karma start",
     "test:live": "karma start --auto-watch --no-single-run",
-    "electron": "electron app"
+    "electron": "electron app",
+    "electron-build": "webpack --config webpack.electron.js --bail -p",
+    "electron-package": "electron-packager ./app arvakr --platform=linux,win32 --arch=x64 --out=dist/app"
   },
   "repository": {
     "type": "git",
@@ -50,6 +52,8 @@
   },
   "devDependencies": {
     "angular-mocks": "^1.4.1",
+    "asar": "^0.11.0",
+    "electron-packager": "^7.0.1",
     "electron-prebuilt": "^0.37.7",
     "isparta-instrumenter-loader": "^0.2.1",
     "jasmine-core": "^2.3.4",

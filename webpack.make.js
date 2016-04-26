@@ -15,6 +15,7 @@ module.exports = function makeWebpackConfig(options) {
      */
     var BUILD = !!options.BUILD;
     var TEST = !!options.TEST;
+    var ELECTRON = !!options.ELECTRON;
 
     /**
      * Config
@@ -45,7 +46,28 @@ module.exports = function makeWebpackConfig(options) {
      */
     if (TEST) {
         config.output = {}
-    } else {
+    } 
+    
+    else if (ELECTRON) {
+        config.output = {
+            // Absolute output directory
+            path: __dirname + '/app/public',
+
+            // Output path from the view of the page
+            // Uses webpack-dev-server in development
+            publicPath: BUILD ? __dirname + '/app/public/' : 'http://localhost:8080/',
+
+            // Filename for entry points
+            // Only adds hash in build mode
+            filename: BUILD ? '[name].[hash].js' : '[name].bundle.js',
+
+            // Filename for non-entry points
+            // Only adds hash in build mode
+            chunkFilename: BUILD ? '[name].[hash].js' : '[name].bundle.js'
+        }
+    }
+    
+    else {
         config.output = {
             // Absolute output directory
             path: __dirname + '/public',
@@ -193,20 +215,28 @@ module.exports = function makeWebpackConfig(options) {
      * Reference: http://webpack.github.io/docs/configuration.html#plugins
      * List: http://webpack.github.io/docs/list-of-plugins.html
      */
-    config.plugins = [
-        // Reference: https://github.com/webpack/extract-text-webpack-plugin
-        // Extract css files
-        // Disabled when in test mode or not in build mode
-        new ExtractTextPlugin('[name].[hash].css?sourceMap', {
-            disable: !BUILD || TEST
-        })//,
-        /*
-        new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery"
-        })
-        */
-    ];
+    
+    if(ELECTRON && false) {
+       config.plugins = [
+           new ExtractTextPlugin(__dirname + '/app/public/[name].[hash].css?sourceMap', { disable: !BUILD || TEST })
+       ]; 
+    }
+    else {
+        config.plugins = [
+            // Reference: https://github.com/webpack/extract-text-webpack-plugin
+            // Extract css files
+            // Disabled when in test mode or not in build mode
+            new ExtractTextPlugin('[name].[hash].css?sourceMap', {
+                disable: !BUILD || TEST
+            })//,
+            /*
+            new webpack.ProvidePlugin({
+                $: "jquery",
+                jQuery: "jquery"
+            })
+            */
+        ];
+    }
 
     // Skip rendering index.html in test mode
     if (!TEST) {
