@@ -105,7 +105,7 @@ module.exports = function makeWebpackConfig(options) {
             // Rename the file using the asset hash
             // Pass along the updated reference to your code
             // You can add here any file extension you want to get copied to your output
-            test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+            test: /\.(jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
             loader: 'url-loader?limit=10000'
         },
          {
@@ -115,7 +115,7 @@ module.exports = function makeWebpackConfig(options) {
             // Rename the file using the asset hash
             // Pass along the updated reference to your code
             // You can add here any file extension you want to get copied to your output
-            test: /\.(jpg|jpeg|gif|woff|woff2|ttf|eot)$/,
+            test: /\.(png|jpg|jpeg|gif|woff|woff2|ttf|eot)$/,
             loader: 'file'
         }, {
             // HTML LOADER
