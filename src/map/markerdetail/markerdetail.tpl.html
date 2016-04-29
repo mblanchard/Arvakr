@@ -6,19 +6,24 @@
           <div id="icon-div"></div>
         </div>
       </md-toolbar>
-      <md-content style="max-width: 350px; max-height: 500px;">
-        <div style="max-width: 350px; max-height: 500px; margin-left: 20px; margin-right: 20px;">
+      <md-content style="max-width: 500px; max-height: 500px;" ng-show="!vm.showGraph">
+        <div style="margin-left: 20px; margin-right: 20px;">
           
-          <md-list ng-cloak>
+          <md-list>
             <md-list-item ng-repeat="detail in vm.markerDetails">
               <p> <strong>{{detail.key}}</strong><br/>{{detail.value}}</p>
             </md-list-item>
           </md-list>
         </div>
       </md-content>
+      
+      <md-content style="max-width: 600px; max-height: 500px; overflow: hidden;"   ng-show="vm.showGraph">         
+        <div google-chart chart="myChartObject" style="width=100% overflow: hidden; margin: 0"></div>
+      </md-content>
+      
     <md-dialog-actions layout="row">
       <span flex></span>
       <md-button ng-click="vm.closeDialog()">Cancel</md-button>
-      <md-button ng-click="vm.showChart()" style="margin-right: 20px;">View Chart</md-button>
+      <md-button ng-click="vm.showChart()" style="margin-right: 20px;">Toggle Chart</md-button>
     </md-dialog-actions>
 </md-dialog>

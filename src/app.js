@@ -11,6 +11,7 @@ import ngAnimate from 'angular-animate/angular-animate.min.js';
 import ngAria from 'angular-aria';
 
 import ngMaterial from 'angular-material'
+import 'angular-google-chart'
 
 //Config
 import { routing, routingEventsLogger, theming,addInterceptors } from './app.config';

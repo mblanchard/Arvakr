@@ -13,6 +13,7 @@ export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdD
   var apiMarkerDetails = $scope.$parent.vm.markerDetails;
   vm.markerDetails = [];
   vm.iconName = warningIcon; //will be overwritten by getIcon
+	vm.showGraph = false;
 
 	activate();
  
@@ -36,11 +37,54 @@ export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdD
 	  		"key": detailName.split(/(?=[A-Z])/).join(' '),
 	  		"value": convertToDisplayString(detailName, apiMarkerDetails[detailName])
 	  	});
+			
+		$scope.myChartObject = {
+  "type": "AreaChart",
+  "displayed": false,
+  "data": {
+    "cols": [
+			{ "id": "time", "label": "Time", "type": "string","p": {} },
+      { "id": "projected", "label": "Projected", "type": "number","p": {} },
+      { "id": "actual", "label": "Actual", "type": "number","p": {} }
+    ],
+    "rows": [
+       {c: [ {"v": "5am"},{"v": 1},{"v": 0.5} ]},
+			 {c: [ {"v": "8am"},{"v": 3},{"v": 3} ]},
+			 {c: [ {"v":"11am"},{"v": 5},{"v": 4} ]},
+			 {c: [ {"v": "2pm"},{"v": 4.5},{"v": 5} ]},
+			 {c: [ {"v": "5pm"},{"v": 3.5},{"v": 4} ]},
+			 {c: [ {"v": "8pm"},{"v": 2},{"v": 2.5} ]},
+    ]
+  },
+  "options": {
+    "title": "Actual Output vs. Projected",
+		'width':350,
+		'height':200,
+		'chartArea':{'left':50,'top':25,'width':'60%','height':'75%'},
+    "isStacked": "false",
+    "fill": 20,
+    "displayExactValues": true,
+    "vAxis": {
+      "gridlines": {
+        "count": 10
+      }
+    }
+  },
+  "formatters": {},
+	"view": {
+    "columns": [
+      0,
+      1,
+			2
+    ]
+  }
+}
+			
 		}
   }
 
-  vm.showChart = function(){
-    $mdDialog.hide();
+  vm.showChart = function() {
+    vm.showGraph = !vm.showGraph;
   }
   
   vm.closeDialog = function () {
