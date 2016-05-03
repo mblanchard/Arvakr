@@ -37,7 +37,9 @@ export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gma
     vm.inverterNodes = markerservice.getInverterMarkers();
     
     $timeout(function () {
-      vm.mapNodes = vm.weatherNodes.concat(vm.inverterNodes);
+      if( vm.weatherNodes && vm.inverterNodes) {
+        vm.mapNodes = vm.weatherNodes.concat(vm.inverterNodes);
+      }
     });
   }
    

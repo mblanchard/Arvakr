@@ -1,0 +1,18 @@
+.chart {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chart-row {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chart-wrapper {
+  margin: 25px;
+}
+
+.md-headline {
+  margin-left: 20px;
+}

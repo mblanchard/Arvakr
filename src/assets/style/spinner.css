@@ -99,6 +99,7 @@
     opacity: 0;
   }
 }
+
 @keyframes splash {
   0% {
     opacity: 0;
@@ -138,7 +139,6 @@
     opacity: 0;
   }
 }
-
 
 #spinnerText {
   position: relative;

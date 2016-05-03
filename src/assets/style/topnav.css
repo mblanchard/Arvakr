@@ -21,4 +21,7 @@
     #filter-text {
     display: none;
   }
+  .toolbar-item__text {
+    display: none; 
+  }
 }

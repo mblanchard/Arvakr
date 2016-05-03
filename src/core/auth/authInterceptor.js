@@ -4,7 +4,7 @@ export default function AuthInterceptor(authcache) {
         var session = authcache.getSession();
         if(session && session.accessToken) {
           config.headers.authorization = "Bearer " + session.accessToken;
-        }    
+        }   
         return config;
     }
     return service;
