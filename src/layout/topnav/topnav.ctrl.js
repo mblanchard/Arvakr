@@ -33,10 +33,6 @@ export default function topNav() {
       console.log(notification);
       gmapservice.centerOn(notification.fpLat,notification.fpLon, 12);
     }
-
-    vm.goToFilter = function () {
-      $state.go('filter');
-    }
     
     vm.refreshCache = function() {
       localStorage.clear();

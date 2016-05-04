@@ -1,13 +1,13 @@
-<div id="charts-container">
-  <div layout="column" layout-gt-md="row">
-    <chart-tile flex-gt-md=50></chart-tile>
-    <chart-tile flex-gt-md=50></chart-tile>
-  </div>
-  
-  
-  <div layout="column" layout-gt-md="row">
-    <chart-tile flex-gt-md=50></chart-tile>
-    <chart-tile flex-gt-md=50></chart-tile> 
-  </div>
+<div id="charts-container" layout="row" layout-wrap>
+    <div ng-repeat="chart in vm.charts" flex=100 flex-gt-lg=50>
+        <div class="chart-wrapper">
+            <md-card class="chart">
+                <md-card-content class="chart__content" layout="row" layout-align="space-between">
+                    <div google-chart chart="chart.data" style="width: 100%; overflow: hidden; margin: 0"></div>
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+
 
 </div>

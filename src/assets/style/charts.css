@@ -1,16 +1,19 @@
 .chart {
-  max-width: 500px;
+  min-width: 550px;
+  max-width: 625px;
+  height: 332px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.chart-row {
+.chart__content {
   margin-left: auto;
   margin-right: auto;
+  width: 550px;
 }
 
 .chart-wrapper {
-  margin: 25px;
+  margin: 20px;
 }
 
 .md-headline {

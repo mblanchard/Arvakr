@@ -32,6 +32,7 @@ const app = angular
     .config(['$mdThemingProvider',theming])
     .config(['$urlRouterProvider','$stateProvider',routing])
     .config(['$httpProvider',addInterceptors])
+    .config(['$compileProvider', function ($compileProvider) { $compileProvider.debugInfoEnabled(false);}])
 
 if (DEBUG) {
     app.run(routingEventsLogger);
