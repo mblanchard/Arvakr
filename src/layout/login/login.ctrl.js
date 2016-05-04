@@ -11,6 +11,7 @@ export default function LoginCtrl($scope, $q, $timeout, authservice, $mdDialog) 
         $scope.$parent.vm.isAuthenticated = true;
         $scope.$parent.vm.username = vm.username;
         $mdDialog.hide();
+        document.location.reload();
       }       
       else {
         $mdDialog.show(
