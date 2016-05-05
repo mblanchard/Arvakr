@@ -1,9 +1,9 @@
 .chart {
-  min-width: 550px;
   max-width: 625px;
   height: 332px;
   margin-left: auto;
   margin-right: auto;
+  overflow: hidden;
 }
 
 .chart__content {
