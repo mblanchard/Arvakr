@@ -3,33 +3,47 @@
     <span><a href="/#/map">Arvakr</a></span>
     <span flex=""></span>
     
-    <md-button ng-if='vm.isAuthenticated != true' ng-click="vm.login()">
-      <div>
-        <span class='toolbar-item__text'>log in</span>
-        <svg class='toolbar-item__icon' fill="#CCD" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-          <path d="M0 0h24v24H0z" fill="none"/>
-        </svg>
-      </div>
-    </md-button>
+
+    <md-menu-bar>
     
-    <md-menu ng-if='vm.isAuthenticated == true'>
-      <md-button ng-click="$mdOpenMenu($event)">
-        <div>
-          <span class='toolbar-item__text'>{{::vm.username}}</span>
-          <svg class='toolbar-item__icon' fill="#CCD" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            <path d="M0 0h24v24H0z" fill="none"/>
-          </svg>
-        </div>
-      </md-button>
-      <md-menu-content style="margin-top:50px" width="4">
-        <md-menu-item>
-          <md-button ng-click="vm.logout()"> Log out </md-button>
-        </md-menu-item>
-      </md-menu-content>
-    </md-menu>
-    
+      <md-menu ng-if='vm.isAuthenticated == true'>
+        <md-button ng-click="$mdOpenMenu($event)">
+          <div>
+            <span class='toolbar-item__text'>{{::vm.username}}</span>
+            <svg class='toolbar-item__icon' fill="#CCD" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+          </div>
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item>
+            <md-button ng-click="vm.logout()"> Log out </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+      
+      <md-menu ng-if='vm.isAuthenticated == true'>
+        <md-button ng-click="$mdOpenMenu($event)">
+          <div>
+            <span id="notification-text" class='toolbar-item__text'>notifications</span>
+            <svg class='toolbar-item__icon' fill="#CCD" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+            </svg>
+          </div>
+        </md-button>
+        <md-menu-content width="4" layout="column" class="notification">
+          <md-menu-item ng-repeat="notification in vm.notifications" layout="row">
+            <md-button md-prevent-menu-close="md-prevent-menu-close" ng-click="vm.selectNotification(notification)" flex="75">{{notification.description}}</md-button>
+            <span>
+              <md-button md-prevent-menu-close="md-prevent-menu-close" ng-click="vm.removeNotification(notification)"><span md-prevent-menu-close>close</span></md-button>
+            </span>
+            
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+     
+    </md-menu-bar>
     
     <md-button ng-if='vm.isAuthenticated == true' href='/#/map'>
       <div>
@@ -54,6 +68,16 @@
       </div>
     </md-button>
     
+    <md-button ng-if='vm.isAuthenticated != true' ng-click="vm.login()">
+      <div>
+        <span class='toolbar-item__text'>log in</span>
+        <svg class='toolbar-item__icon' fill="#CCD" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          <path d="M0 0h24v24H0z" fill="none"/>
+        </svg>
+      </div>
+    </md-button>
+    
     
     <md-button ng-if='vm.isAuthenticated != true' href='/#/notifications'>
       <div>
@@ -64,21 +88,6 @@
       </div>
     </md-button>
 
-    <md-menu ng-if='vm.isAuthenticated == true'>
-      <md-button ng-click="$mdOpenMenu($event)">
-        <div>
-          <span id="notification-text" class='toolbar-item__text'>notifications</span>
-          <svg class='toolbar-item__icon' fill="#CCD" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
-          </svg>
-        </div>
-      </md-button>
-      <md-menu-content style="margin-top:50px" width="4">
-        <md-menu-item ng-repeat="notification in vm.notifications">
-          <md-button ng-click="vm.selectNotification(notification)">{{notification.description}}</md-button>
-        </md-menu-item>
-      </md-menu-content>
-    </md-menu>
 
     <md-button ng-click="vm.viewFilter()">
       <div>

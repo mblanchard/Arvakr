@@ -2,33 +2,31 @@ import InitNotificationSocket from './notification.data.js'
 
 export default function NotificationService(dataservice) { 
   var NOTIFICATION_MAX = 5;
-  var notifications = [
-  {
-  	lat: 41879751,
-  	lon: -87634685,
-  	time: 1460580372,
-    description: "Attack ships on fire off the shoulder of Orion"
-  },
-  {
-  	lat: 41960187,
-  	lon: -87848580,
-  	time: 1460581280,
-    description: "C-beams glitter in the dark near the Tannhauser Gate"
-  }];
+  var notifications = [];
 
   var getNotifications = function() {
     return notifications;
   };
   
+  var removeNotification = function(id) {   
+    for( var i=notifications.length-1; i>=0; i--) {
+      if( notifications[i].id == id) {
+        notifications.splice(i,1);}
+    }
+    //notifications = [];
+  }
+  
   var onmessage = function(messageEvent) {
     var args = messageEvent.data.split('_');
-    notifications.unshift({lat: args[0], lon: args[1], time: args[2], description:args[3]});
-    if(notifications.length >  NOTIFICATION_MAX) notifications.pop();  
+      if(notifications.length >=  NOTIFICATION_MAX) notifications.pop();
+      notifications.unshift({lat: args[0], lon: args[1], time: args[2], description:args[3], id: args[2]+"_"+Math.random() });
+    
   }
   
   var sockets = InitNotificationSocket(dataservice, onmessage)
   
   return {
-    getNotifications: getNotifications
+    getNotifications: getNotifications,
+    removeNotification: removeNotification
   }
 }

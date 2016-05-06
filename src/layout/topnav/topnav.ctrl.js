@@ -30,8 +30,12 @@ export default function topNav() {
     }
     
     vm.selectNotification = function(notification) {
-      console.log(notification);
       gmapservice.centerOn(notification.fpLat,notification.fpLon, 12);
+    }
+    
+    vm.removeNotification = function(notification) {
+      notificationservice.removeNotification(notification.id);
+      return false;
     }
     
     vm.refreshCache = function() {

@@ -10,8 +10,13 @@
   vertical-align: top;
 }
 
-.toolbar-item__text {
+md-menu-bar md-menu.md-open > button {
+  background-color: rgba(255,255,255,0.2);
+}
 
+md-menu-content > md-menu-item  .md-button > span {
+  color: #222;
+  line-height: initial;
 }
 
 @media (max-width: 800px) {

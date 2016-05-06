@@ -28,3 +28,8 @@ html,body { height: 100%; margin: 0px; padding: 0px; background-color: #EEE; }
   top:56px;left:0px;right:0px;bottom:0px;
   position: absolute;
 }
+
+.notification {
+  overflow: hidden;
+  color: #000;
+}

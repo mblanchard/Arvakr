@@ -38,6 +38,7 @@
   margin: auto;
   position: relative;
 }
+
 .drip:before {
   position: absolute;
   left: 92.5px;
@@ -50,6 +51,7 @@
   opacity: 0;
   animation: drip 3s ease infinite;
 }
+
 .drip:after {
   box-sizing: border-box;
   position: absolute;

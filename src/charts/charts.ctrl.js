@@ -1,7 +1,6 @@
 export default function ChartsCtrl($scope, $q, $timeout, dataservice, busyservice) {
   const vm = this;
   
-  
   function createCharts() {
     vm.charts = [];
     
@@ -76,9 +75,6 @@ export default function ChartsCtrl($scope, $q, $timeout, dataservice, busyservic
     
     futureDailyChartData.data.rows = [];
     addMockedDailyData("",futureDailyChartData.data.rows);
-    
-    
-    
     
     var weeklyChartData  =  {
       "type": "AreaChart",
@@ -166,7 +162,6 @@ export default function ChartsCtrl($scope, $q, $timeout, dataservice, busyservic
     addMockedDailyData("Mon ",futureWeeklyChartData.data.rows);
     addMockedDailyData("Tues ",futureWeeklyChartData.data.rows);
     addMockedDailyData("Wed ",futureWeeklyChartData.data.rows);
-    
     
     var chart1   =  {
       name: "Daily Projected vs Actual",
