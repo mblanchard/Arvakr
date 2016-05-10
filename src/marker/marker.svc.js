@@ -44,10 +44,11 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,cachese
     return markerApi.getWeatherMarkers().then(function(markers){
       if(markers) {
         markerCache.weatherMarkers = markers.map(function(m,i){ 
+          console.log(m);
           return  {  
                     longitude: m.Longitude, latitude: m.Latitude, 
                     coords:{'longitude': m.Longitude/1000000,'latitude': m.Latitude/1000000}, 
-                    key: 'weather_' + i, description: 'Weather #' + i, icon: weatherIcon
+                    key: 'weather_' + i, description: m.Name, icon: weatherIcon
                   } 
         });   
       }
