@@ -4,7 +4,7 @@ export default function InitMarkerApi(dataservice, onInverterMessage, onInverter
   dataservice.addEndpoint('retrieving weather markers', 
     {
       method: 'get',
-      url: 'api/weather/nodes',
+      url: 'api/weather',
     }
   );    
   
@@ -41,7 +41,7 @@ export default function InitMarkerApi(dataservice, onInverterMessage, onInverter
     
   return {
     //weather
-    getWeatherMarkers: function() { return dataservice.request('retrieving weather markers');},
+    getWeatherMarkers: function(lat,lon) { return dataservice.request('retrieving weather markers', {},'/'+ lat + '/' + lon + '/nodes');},
     getDailyWeatherData: function(lat,lon,time) { return dataservice.request('retrieving daily weather data', {},'/'+ lat + '/' + lon + '/' + time + '/daily');},
     getRecentDailyWeatherData: function(lat,lon) { return dataservice.request('retrieving recent daily weather data', {},'/'+ lat + '/' + lon + '/daily');},
     

@@ -3,6 +3,8 @@ import * as ngMap from 'angular-google-maps';
 
 export default function GmapsService(dataservice, uiGmapGoogleMapApiProvider, uiGmapObjectIterators) { 
   
+
+ 
   var map = { 
     showMarkers: true,
     doCluster: false,
@@ -11,6 +13,8 @@ export default function GmapsService(dataservice, uiGmapGoogleMapApiProvider, ui
     control: {}
   };
   
+  var getCenter = function(){return map.center;}
+  
   function centerOn(lat, lon, zoom) {
     map.center = { latitude: lat, longitude: lon};
     map.zoom = zoom;
@@ -18,6 +22,7 @@ export default function GmapsService(dataservice, uiGmapGoogleMapApiProvider, ui
 
   return {
     map: map,
-    centerOn: centerOn
+    centerOn: centerOn, 
+    getCenter: getCenter
   }
 };

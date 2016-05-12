@@ -5,7 +5,7 @@ import inverterIcon from './../assets/images/power.svg'
 import inverterWarningIcon from './../assets/images/power_warning.svg'
 import inverterCriticalIcon from './../assets/images/power_critical.svg'
 
-export default function MarkerService($q,$rootScope,$timeout,dataservice,cacheservice,authservice) { 
+export default function MarkerService($q,$rootScope,$timeout,dataservice,cacheservice,authservice, gmapservice) { 
   var markerCache = new MarkerCache(cacheservice);
   
   function onInverterMessage(messageEvent){
@@ -40,8 +40,8 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,cachese
   
   function initWeather() {
     if (markerCache.weatherMarkers !== null && markerCache.weatherMarkers !== undefined) return;
-    
-    return markerApi.getWeatherMarkers().then(function(markers){
+    var mapCenter = gmapservice.getCenter();
+    return markerApi.getWeatherMarkers(mapCenter.latitude*1000000,mapCenter.longitude*1000000).then(function(markers){
       if(markers) {
         markerCache.weatherMarkers = markers.map(function(m,i){ 
           console.log(m);
