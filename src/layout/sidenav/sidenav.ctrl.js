@@ -3,8 +3,8 @@ import markerDetailTemplate from './../../map/markerdetail/markerdetail.tpl.html
 
 export default function sideNav() {
   
-  SideNavController.$inject = ['$scope','$q','$timeout','dataservice','$mdSidenav','$mdDialog','markerservice','gmapservice'];
-  function SideNavController($scope, $q, $timeout, dataservice, $mdSidenav, $mdDialog, markerservice,gmapservice) {
+  SideNavController.$inject = ['$scope','$q','$rootScope','$timeout','dataservice','$mdSidenav','$mdDialog','gmapservice','geoservice'];
+  function SideNavController($scope, $q, $rootScope, $timeout, dataservice, $mdSidenav, $mdDialog, gmapservice,geoservice) {
     const vm = this; 
     
     vm.close = function () {
@@ -13,35 +13,31 @@ export default function sideNav() {
         
       });
     }
+
+    $scope.$on('geospatial-loaded', function() {
+      vm.datasets = geoservice.getDatasets();
+    });
     
-    vm.selectMarker = function(marker) {
-      console.log(marker);
-      gmapservice.centerOn(marker.latitude/1000000,marker.longitude/1000000, 12);
+    vm.toggleDataset = function(id) {
+      $rootScope.$broadcast('geospatial-updated');
+    }
+
+    vm.selectMarker = function(dataset,id) {
+      
       $mdSidenav('right').close().then(function () {
-        
-        markerservice.getMarkerData(marker.key).then(function(details) {
-          vm.markerDetails = details;
-          $mdDialog.show({
-            scope: $scope,
-            preserveScope: true,
-            template: markerDetailTemplate,
-            parent: angular.element(document.body),
-            clickOutsideToClose: true
-          })
-        })
+        var details = geoservice.getCached(dataset,id);
+        gmapservice.centerOn(details.Latitude/1000000,details.Longitude/1000000, 12);
+        vm.selectedMarker = {'details':details, 'dataset':dataset}
+        $mdDialog.show({
+          scope: $scope,
+          preserveScope: true,
+          template: markerDetailTemplate,
+          parent: angular.element(document.body),
+          clickOutsideToClose: true
+        })     
       });
     }
-       
-    function activate() {
-      var promises = [markerservice.initialize()];
-      return $q.all(promises).then(function () {
-        vm.datasets = [];
-        vm.datasets.push( { label: 'Weather', markers:markerservice.getWeatherMarkers() })
-        vm.datasets.push( { label: 'Inverters', markers:markerservice.getInverterMarkers() })
-      });
-    }
-    
-    activate();   
+   
     return vm;
   }
   

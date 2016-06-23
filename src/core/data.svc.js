@@ -1,12 +1,11 @@
-
 export default function DataService($http, $q, $timeout, busyservice) { 
     
   var endpoints = {}
   var sockets = {}
-  //var DEFAULT_API_BASE_URL = "http://localhost:8485/";
-  //var DEFAULT_WS_BASE_URL = "ws://localhost:8485/";
-  var DEFAULT_API_BASE_URL = "https://alsvior.azurewebsites.net/";
-  var DEFAULT_WS_BASE_URL = "wss://alsvior.azurewebsites.net/";
+  var DEFAULT_API_BASE_URL = "http://localhost:8485/";
+  var DEFAULT_WS_BASE_URL = "ws://localhost:8485/";
+  //var DEFAULT_API_BASE_URL = "https://alsvior.azurewebsites.net/";
+  //var DEFAULT_WS_BASE_URL = "wss://alsvior.azurewebsites.net/";
   
   function generateUrl(relativeUrl) {
     return DEFAULT_API_BASE_URL + relativeUrl;
@@ -45,12 +44,14 @@ export default function DataService($http, $q, $timeout, busyservice) {
     return sockets[key];
   }
   
-  var request = function(key, data, url) {
+  var request = function(key, data, url, params) {
     busyservice.startBusy(key + '...');
     
     var endpoint = endpoints[key];
     if(!endpoint) return defaultFailure();
-    var config = { 'url': endpoint.config.url + (url != undefined? url:""), 'method':endpoint.config.method, 'data':data, 'headers':endpoint.config.headers}  
+    var config = endpoint.config;
+    var config = { 'url': endpoint.config.url + (url != undefined? url:""), 
+    'method':endpoint.config.method, 'data':data, 'headers':endpoint.config.headers,'params':params}  
     return $http(config).then(endpoint.success).catch(endpoint.failure);
   }
   

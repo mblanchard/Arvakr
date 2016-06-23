@@ -1,10 +1,7 @@
 import * as ngMap from 'angular-google-maps';
 
-
 export default function GmapsService(dataservice, uiGmapGoogleMapApiProvider, uiGmapObjectIterators) { 
-  
 
- 
   var map = { 
     showMarkers: true,
     doCluster: false,

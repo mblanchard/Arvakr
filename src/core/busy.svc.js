@@ -23,7 +23,7 @@ export default function BusyService($timeout) {
         busyEl.parentElement.removeChild(busyEl);
         spinnerExists = false;
       }
-    }, 600);
+    }, 400);
   }
   
   stopBusy();

@@ -5,55 +5,36 @@ import inverterIcon from './../assets/images/power.svg'
 export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gmapservice, markerservice, authservice) {
 
   const vm = this;
-  
-  activate();
- 
-  function activate() {
-    var promises = [markerservice.initialize()];
-    drawMap();
-    return $q.all(promises).then(function () {
-      renderMarkers()
-    });
-  }
+  $timeout(function () {
+    vm.map = gmapservice.map;
+    vm.mapNodes = { length: 0 };
+  });
+
+  renderMarkers();
+
+  $scope.$on('markers-updated', function() {
+    renderMarkers();
+  });
   
   vm.markerEvents = {
     click: function(marker, eventName, model) {
-      vm.selectedMarker = marker;
-      retrieveMarkerData(marker.key).then(function(details) {
-        vm.markerDetails = details;
-        $mdDialog.show({
-          scope: $scope,
-          preserveScope: true,
-          template: markerDetailTemplate,
-          parent: angular.element(document.body),
-          clickOutsideToClose: true
-        })
+
+      var details = markerservice.getMarkerData(marker.key);
+      vm.selectedMarker = {'details':details, 'dataset':marker.model.dataset}
+      $mdDialog.show({
+        scope: $scope,
+        preserveScope: true,
+        template: markerDetailTemplate,
+        parent: angular.element(document.body),
+        clickOutsideToClose: true
       })
     }
   }
   
-  function renderMarkers() { 
-    vm.weatherNodes = markerservice.getWeatherMarkers();
-    vm.inverterNodes = markerservice.getInverterMarkers();
-    
+  function renderMarkers() {    
     $timeout(function () {
-      if( vm.weatherNodes && vm.inverterNodes) {
-        vm.mapNodes = vm.weatherNodes.concat(vm.inverterNodes);
-      }
+      vm.mapNodes = markerservice.getMarkers();
     });
-  }
-   
-  function drawMap() {
-    $timeout(function () {
-      vm.map = gmapservice.map;
-      vm.mapNodes = { length: 0 };
-    });
-  }
-  
-  function retrieveMarkerData(key) {
-    return markerservice.getMarkerData(key).then(
-      function(data){return data;}
-    );
   }
   
   return vm;

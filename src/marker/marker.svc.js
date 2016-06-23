@@ -1,12 +1,10 @@
-import InitMarkerApi from './marker.data.js'
-import MarkerCache from './marker.cache.js'
 import weatherIcon from './../assets/images/rsz_slight_drizzle.png'
 import inverterIcon from './../assets/images/power.svg'
 import inverterWarningIcon from './../assets/images/power_warning.svg'
 import inverterCriticalIcon from './../assets/images/power_critical.svg'
 
-export default function MarkerService($q,$rootScope,$timeout,dataservice,cacheservice,authservice, gmapservice) { 
-  var markerCache = new MarkerCache(cacheservice);
+export default function MarkerService($q,$rootScope,$timeout,dataservice,authservice, gmapservice, geoservice) { 
+  var markers = [];
   
   function onInverterMessage(messageEvent){
     var args = messageEvent.data.split('_');
@@ -27,89 +25,40 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,cachese
       }
     }
   } 
-  
-  var markerApi = InitMarkerApi(dataservice, onInverterMessage);
 
 
-  function initialize() {  
-    var promises = [initWeather(),initInverters()];
-    return $q.all(promises).then(function () {
-      //do stuff
-    });   
-  } 
-  
-  function initWeather() {
-    if (markerCache.weatherMarkers !== null && markerCache.weatherMarkers !== undefined) return;
-    var mapCenter = gmapservice.getCenter();
-    return markerApi.getWeatherMarkers(mapCenter.latitude*1000000,mapCenter.longitude*1000000).then(function(markers){
-      if(markers) {
-        markerCache.weatherMarkers = markers.map(function(m,i){ 
-          console.log(m);
-          return  {  
-                    longitude: m.Longitude, latitude: m.Latitude, 
-                    coords:{'longitude': m.Longitude/1000000,'latitude': m.Latitude/1000000}, 
-                    key: 'weather_' + i, description: m.Name, icon: weatherIcon
-                  } 
-        });   
-      }
-    })
+  function updateMarkers() {
+      createMarkersFromGeoServiceNodes();
+      $rootScope.$broadcast('markers-updated');
+  }
+    $rootScope.$on('geospatial-loaded', function() { updateMarkers(); });
+    $rootScope.$on('geospatial-updated', function() { updateMarkers(); });
+
+
+  //TODO: Assigning icons to datasets is still handled client-side.  
+  //Future-state, server passes URIs in response to initial "getDatasets" call
+  function getIconFromDataset(datasetName) {
+    if(datasetName.indexOf('Weather') > -1) return weatherIcon;
+    if(datasetName.indexOf('Inverter') > -1) return inverterIcon;
   }
   
-  function initInverters() {
-    if (markerCache.inverterMarkers !== null && markerCache.inverterMarkers !== undefined) return;
-    
-    return markerApi.getInverterMarkers().then(function(markers){
-      if(markers) {
-        markerCache.inverterMarkers = markers.map(function(m,i){
-          return  {  
-                    longitude: m.Longitude, latitude: m.Latitude, 
-                    coords:{'longitude': m.Longitude/1000000,'latitude': m.Latitude/1000000}, 
-                    key: 'inverter_' + i, description: 'Inverter #' + i, icon: inverterIcon
-                  }          
-        });   
-      }
-    })
+  function createMarkersFromGeoServiceNodes() {
+    var datasets = geoservice.getActiveDatasets();
+    markers = [];
+    datasets.forEach(function(d){
+      if(d.nodes != null && d.nodes.length > 0)
+      markers =  markers.concat(d.nodes.map(function(m,i) {
+        return  {  
+          longitude: m.Longitude, latitude: m.Latitude, 
+          coords:{'longitude': m.Longitude/1000000,'latitude': m.Latitude/1000000}, 
+          key: d.Name + '_' + i, description: m.Name, icon: getIconFromDataset(d.Name), dataset: d.Name
+        } 
+      }) )
+    });
   }
-   
-  function getWeatherMarkers() {
-    if(authservice.isAuthenticated()) {
-      return markerCache.weatherMarkers;
-    }
-  }
-  
-  function getInverterMarkers() {
-    if(authservice.isAuthenticated()) {
-      return markerCache.inverterMarkers;
-    }
-  }
-  
-  function getDailyWeatherData(key) {
-    var args = key.split('_');
-    var markerData = markerCache.weatherMarkers[args[1]];
-    if(!markerData) return null;
-    var timestamp = Math.floor(stripTime(Date.now()).getTime()/1000);
-    var lat = markerData.latitude; var lon = markerData.longitude;
-    markerApi.getDailyWeatherData(lat,lon,timestamp).then(function(data){
-      return data;
-    })
-  }
-  
-  function getRecentInverterData(key) {
-    var markerData = markerCache.inverterMarkers[key];
-    if(!markerData) return $q.when('no marker data available');
-    var lat = markerData.latitude; var lon = markerData.longitude;
-    return markerApi.getRecentInverterData(lat,lon).then(function(data){
-      return data;
-    })
-  }
-  
-  function getRecentDailyWeatherData(key) { 
-    var markerData = markerCache.weatherMarkers[key];
-    if(!markerData) return;
-    var lat = markerData.latitude; var lon = markerData.longitude;
-    return markerApi.getRecentDailyWeatherData(lat,lon).then(function(data){
-      return data;
-    })
+
+  function getMarkers() {
+    return markers;
   }
     
   function stripTime(date) {
@@ -119,20 +68,11 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,cachese
   
   function getMarkerData(key) {
     var args = key.split('_');
-    if(args[0] == 'weather') {
-      return getRecentDailyWeatherData(args[1]).then( function(data){ return data; }).catch(function(){return; });  
-    }
-    else if(args[0] == 'inverter') {
-      return getRecentInverterData(args[1]).then( function(data) { return data; }).catch(function(){return; });
-    }  
+    return geoservice.getCached(args[0],args[1]);
   }
    
   return {
-    initialize: initialize,
-    getWeatherMarkers: getWeatherMarkers,
-    getInverterMarkers: getInverterMarkers,
-    getDailyWeatherData: getDailyWeatherData,
-    getRecentDailyWeatherData: getRecentDailyWeatherData,
+    getMarkers: getMarkers,
     getMarkerData: getMarkerData
   }
 };

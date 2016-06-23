@@ -28,7 +28,7 @@
     "angular-aria": "^1.4.7",
     "angular-google-chart": "^0.1.0",
     "angular-google-maps": "^2.3.2",
-    "angular-material": "^0.11.4",
+    "angular-material": "^1.0.9",
     "angular-simple-logger": "^0.1.7",
     "angular-ui-router": "^0.2.15",
     "autoprefixer-core": "^5.2.0",

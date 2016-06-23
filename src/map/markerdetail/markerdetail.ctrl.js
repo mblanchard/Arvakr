@@ -8,12 +8,19 @@ import dropletIcon from './../../assets/images/ic_opacity_white_48px.svg' //rain
 import fogIcon from './../../assets/images/ic_texture_white_48px.svg' //fog
 import warningIcon from './../../assets/images/ic_report_problem_white_48px.svg' //unknown
 
-export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdDialog) {
+export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdDialog, geoservice) {
   const vm = this;
-  var apiMarkerDetails = $scope.$parent.vm.markerDetails;
-  vm.markerDetails = [];
+  var apiMarkerData = $scope.$parent.vm.selectedMarker.details;
+	vm.datasetName = $scope.$parent.vm.selectedMarker.dataset;
+  
+	vm.markerData = {};
+	vm.markerName = apiMarkerData.Name || vm.datasetName;
+	vm.selectedDatasetId = 0;
   vm.iconName = warningIcon; //will be overwritten by getIcon
-	vm.showGraph = false;
+	vm.chartAvailable = false;
+	vm.endDate = new Date();
+	vm.startDate = new Date(); vm.startDate.setDate(vm.endDate.getDate()- 2);
+	vm.chartFields = [];
 
 	activate();
  
@@ -23,67 +30,112 @@ export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdD
 	  	var img = document.createElement('img');
 			img.src = getIcon(vm.iconName);
 			document.getElementById('icon-div').appendChild(img);
+			vm.datasetEndpoints = [{"Name":vm.datasetName, "DisplayName":vm.datasetName.split(/(?=[A-Z])/).join(' ')}].concat(getDatasetEndpoints());
+			vm.getData();
 		});
   }
 
+	function getDatasetEndpoints() {
+		var datasets = geoservice.getDatasets();
+		var selectedDataset = datasets.find(function(d) {return d.Name == vm.datasetName});
+		if(selectedDataset != null) {
+			return selectedDataset.TimeSeriesEndpoints;
+		}
+	}
+
+	vm.getData = function() {
+		var lat = apiMarkerData.Latitude;
+		var lon = apiMarkerData.Longitude;
+		var endpoint = vm.datasetEndpoints[vm.selectedDatasetId];
+		if(endpoint.Name == vm.datasetName) {vm.markerData = createHumanReadableDetails(apiMarkerData); vm.chartAvailable = false;}
+		else {
+			geoservice.getRecent(endpoint,lat,lon).then(function(response) { 
+				vm.markerData = createHumanReadableDetails(response); 
+				vm.chartFields = [];
+				Object.keys(response).reduce(
+					function(arr,value) { 
+						if(!isNaN(response[value])) { var field = {}; field.name = value; field.isActive =false; arr.push(field)}
+						return arr; 
+					},vm.chartFields);
+				vm.chartAvailable = true;
+			});
+		}
+	}
+
+	//Mocking out functionality
+	vm.renderChart = function() {
+		var lat = apiMarkerData.Latitude;
+		var lon = apiMarkerData.Longitude;
+		var endpoint = vm.datasetEndpoints[vm.selectedDatasetId];
+
+		var end = vm.endDate / 1000 | 0;
+	  var start = vm.startDate / 1000 | 0;
+		geoservice.getInTimeRange(endpoint,lat,lon,start,end).then(function(response) { 
+			if(response.length > 0) {
+								
+				var chartHeader = ["Time"];
+
+				vm.chartFields.reduce(function(headers, field) {
+					if(field.isActive) {headers.push(field.name)}
+					return headers;
+				},chartHeader );
+				if(chartHeader.length <= 1) { return; }
+				console.log(chartHeader);
+
+				var chartData = response.map(function(x) { 
+					var arr = [new Date(x["Time"]*1000)]; for(var i =1; i < chartHeader.length; i++){arr.push(x[chartHeader[i]])} return arr;
+				});
+				
+				$scope.chart.data = [chartHeader].concat(chartData);
+
+			}
+
+		});		
+	}
+
+	function createHumanReadableDetails(markerDetails) {
+		var details = {};
+		for (var detailName in markerDetails) {
+			if (detailName == "Time") continue;
+			else if (detailName == "Icon") {
+				//vm.iconName = markerDetails[detailName];
+				continue;
+			}
+			details[detailName.split(/(?=[A-Z])/).join(' ')] = convertToDisplayString(detailName, markerDetails[detailName]);
+		}
+		return details;
+	}
+
   function init(){
-  	for (var detailName in apiMarkerDetails) {
-	  	if (detailName == "Time") continue;
-	  	else if (detailName == "Icon") {
-	  		vm.iconName = apiMarkerDetails[detailName];
-	  		continue;
-	  	}
-	  	vm.markerDetails.push({
-	  		"key": detailName.split(/(?=[A-Z])/).join(' '),
-	  		"value": convertToDisplayString(detailName, apiMarkerDetails[detailName])
-	  	});
-			
-			$scope.myChartObject = {
-				"type": "AreaChart",
-				"displayed": false,
-				"data": {
-					"cols": [
-						{ "id": "time", "label": "Time", "type": "string","p": {} },
-						{ "id": "projected", "label": "Projected", "type": "number","p": {} },
-						{ "id": "actual", "label": "Actual", "type": "number","p": {} }
-					],
-					"rows": [
-						{c: [ {"v": "5am"},{"v": 1},{"v": 0.5} ]},
-						{c: [ {"v": "8am"},{"v": 3},{"v": 3} ]},
-						{c: [ {"v":"11am"},{"v": 5},{"v": 4} ]},
-						{c: [ {"v": "2pm"},{"v": 4.5},{"v": 5} ]},
-						{c: [ {"v": "5pm"},{"v": 3.5},{"v": 4} ]},
-						{c: [ {"v": "8pm"},{"v": 2},{"v": 2.5} ]},
-					]
-				},
-				"options": {
-					"title": "Actual Output vs. Projected",
-					'width':350,
-					'height':200,
-					'chartArea':{'left':50,'top':25,'width':'60%','height':'75%'},
-					"isStacked": "false",
-					"fill": 20,
-					"displayExactValues": true,
-					"vAxis": {
-						"gridlines": {
-							"count": 10
-						}
+		vm.markerDetails = createHumanReadableDetails(apiMarkerData);
+
+
+				
+		
+		$scope.chart = {
+			"type": "LineChart",
+			"options": {
+				"title": vm.markerName,
+				'width':450,
+				'height':300,
+				'chartArea':{'left':50,'top':25,'width':'60%','height':'75%'},
+				"isStacked": "false",
+				"displayExactValues": true,
+				"vAxis": {
+					"gridlines": {
+						"count": 10
 					}
-				},
-				"formatters": {},
-				"view": {
-					"columns": [
-						0,
-						1,
-						2
-					]
 				}
-			}	
+			},
+			"formatters": {},
 		}
   }
 
   vm.showChart = function() {
     vm.showGraph = !vm.showGraph;
+		if(vm.showGraph) {
+			vm.renderChart();
+		}
   }
   
   vm.closeDialog = function () {

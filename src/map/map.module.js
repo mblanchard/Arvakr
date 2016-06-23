@@ -7,5 +7,5 @@ import MarkerDetailCtrl from './markerdetail/markerdetail.ctrl';
 export default angular.module('app.map', ['uiGmapgoogle-maps',"googlechart"])
     .config(['$stateProvider',routing])
     .controller('MapCtrl', ['$scope', '$q', '$timeout', 'dataservice','$mdDialog','gmapservice','markerservice',MapCtrl])
-    .controller('MarkerDetailCtrl', ['$scope','$q','$timeout','authservice','$mdDialog',MarkerDetailCtrl])
+    .controller('MarkerDetailCtrl', ['$scope','$q','$timeout','authservice','$mdDialog','geoservice',MarkerDetailCtrl])
     .name;
