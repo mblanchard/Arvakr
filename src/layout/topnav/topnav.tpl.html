@@ -7,6 +7,7 @@
     <md-menu-bar>
     
       <md-menu ng-if='vm.isAuthenticated == true'>
+        <a>
         <md-button ng-click="$mdOpenMenu($event)">
           <div>
             <span class='toolbar-item__text'>{{::vm.username}}</span>
@@ -16,6 +17,7 @@
             </svg>
           </div>
         </md-button>
+        </a>
         <md-menu-content width="4">
           <md-menu-item>
             <md-button ng-click="vm.logout()"> Log out </md-button>
@@ -24,6 +26,7 @@
       </md-menu>
       
       <md-menu ng-if='vm.isAuthenticated == true'>
+        <a>
         <md-button ng-click="$mdOpenMenu($event)">
           <div>
             <span id="notification-text" class='toolbar-item__text'>notifications</span>
@@ -32,6 +35,7 @@
             </svg>
           </div>
         </md-button>
+        </a>
         <md-menu-content width="4" layout="column" class="notification">
           <md-menu-item ng-repeat="notification in vm.notifications" layout="row">
             <md-button md-prevent-menu-close="md-prevent-menu-close" ng-click="vm.selectNotification(notification)" flex="75">{{notification.description}}</md-button>
