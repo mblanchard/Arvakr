@@ -14,6 +14,7 @@ export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdD
 	vm.datasetName = $scope.$parent.vm.selectedMarker.dataset;
   
 	vm.markerData = {};
+	vm.fieldBlackList = ["Time","Latitude","Longitude"];
 	vm.markerName = apiMarkerData.Name || vm.datasetName;
 	vm.selectedDatasetId = 0;
   vm.iconName = warningIcon; //will be overwritten by getIcon
@@ -54,7 +55,8 @@ export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdD
 				vm.chartFields = [];
 				Object.keys(response).reduce(
 					function(arr,value) { 
-						if(!isNaN(response[value])) { var field = {}; field.name = value; field.isActive =false; arr.push(field)}
+
+						if(vm.fieldBlackList.indexOf(value)==-1 && !isNaN(response[value])) { var field = {}; field.name = value; field.isActive =false; arr.push(field)}
 						return arr; 
 					},vm.chartFields);
 				vm.chartAvailable = true;

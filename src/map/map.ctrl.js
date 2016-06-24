@@ -7,10 +7,12 @@ export default function MapCtrl($scope, $q, $timeout, dataservice,$mdDialog, gma
   const vm = this;
   $timeout(function () {
     vm.map = gmapservice.map;
-    vm.mapNodes = { length: 0 };
+    vm.mapNodes = { length: 0 }; 
+    renderMarkers(); 
   });
+  
 
-  renderMarkers();
+
 
   $scope.$on('markers-updated', function() {
     renderMarkers();
