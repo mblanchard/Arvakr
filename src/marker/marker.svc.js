@@ -2,6 +2,7 @@ import weatherIcon from './../assets/images/rsz_slight_drizzle.png'
 import inverterIcon from './../assets/images/power.svg'
 import inverterWarningIcon from './../assets/images/power_warning.svg'
 import inverterCriticalIcon from './../assets/images/power_critical.svg'
+import solarIcon from './../assets/images/solar.svg'
 
 export default function MarkerService($q,$rootScope,$timeout,dataservice,authservice, gmapservice, geoservice) { 
   var markers = [];
@@ -40,6 +41,7 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,authser
   function getIconFromDataset(datasetName) {
     if(datasetName.indexOf('Weather') > -1) return weatherIcon;
     if(datasetName.indexOf('Inverter') > -1) return inverterIcon;
+    if(datasetName.indexOf('Solar') > -1) return solarIcon;
   }
   
   function createMarkersFromGeoServiceNodes() {

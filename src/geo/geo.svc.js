@@ -11,8 +11,10 @@ export default function GeoService($q,$rootScope,$timeout,dataservice) {
   function initDatasets() {
     return geoApi.getDatasets().then(function(response) {
       datasets = response;
-      datasets.forEach(function(d) {d.isActive = true; d.DisplayName = d.Name.split(/(?=[A-Z])/).join(' ');  
-        d.TimeSeriesEndpoints.forEach(function(t){ t.DisplayName = t.Name.split(/(?=[A-Z])/).join(' ') + " (Time Series)"; })
+      datasets.forEach(function(d) {
+        d.isActive = true; d.DisplayName = d.Name.split(/(?=[A-Z])/).join(' ');  
+        if(d.TimeSeriesEndpoints == null) d.TimeSeriesEndpoints = [];
+        d.TimeSeriesEndpoints.forEach(function(t){ t.DisplayName = t.Name.split(/(?=[A-Z])/).join(' ') + " (Time Series)"; })     
       })
       return fetchGeospatialNodes();
     });
@@ -20,7 +22,8 @@ export default function GeoService($q,$rootScope,$timeout,dataservice) {
 
   function fetchGeospatialNodes() {    
     var promises = datasets.map(function(d) {
-      return get(d).then(function(response) {d.nodes = response; d.nodes.forEach(
+      return get(d).then(function(response) {
+        d.nodes = response || []; d.nodes.forEach(
         function(n,i){if(n.Name == null) n.Name = `${d.Name} ${i}`; } 
       );});
     });
