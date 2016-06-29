@@ -4,35 +4,29 @@ import inverterWarningIcon from './../assets/images/power_warning.svg'
 import inverterCriticalIcon from './../assets/images/power_critical.svg'
 import solarIcon from './../assets/images/solar.svg'
 
+import InitMockInverterSocket from './marker.data.js'
+
 export default function MarkerService($q,$rootScope,$timeout,dataservice,authservice, gmapservice, geoservice) { 
   var markers = [];
   
+  //TODO: Strip out mock inverter events
   function onInverterMessage(messageEvent){
     var args = messageEvent.data.split('_');
-    if(markerCache == null || markerCache.inverterMarkers == null) return;
     
-    var matchingIndex = markerCache.inverterMarkers.findIndex(
-      function(inv){return inv.latitude == args[0] && inv.longitude == args[1]}
+    var matchingIndex = markers.findIndex(
+      function(inv){return inv.latitude == args[0] && inv.longitude == args[1] && inv.dataset == "InverterNode"}
     );
     if(matchingIndex !== -1) {
-      if(args[3] < 0.2 && args[3] > 0.1) { //warning
-        markerCache.inverterMarkers[matchingIndex].icon = inverterWarningIcon;
-      }
-      else if(args[3] <= 0.1) { //warning
-        markerCache.inverterMarkers[matchingIndex].icon = inverterCriticalIcon;
-      }
-      else {
-        markerCache.inverterMarkers[matchingIndex].icon = inverterIcon;
-      }
+      var mockVal = args[3];
+      markers[matchingIndex].icon = mockVal > 0.2? inverterIcon: mockVal > 0.1? inverterWarningIcon: inverterCriticalIcon;
     }
   } 
-
 
   function updateMarkers() {
       createMarkersFromGeoServiceNodes();
       $rootScope.$broadcast('markers-updated');
   }
-    $rootScope.$on('geospatial-loaded', function() { updateMarkers(); });
+    $rootScope.$on('geospatial-loaded', function() { updateMarkers(); var socket = InitMockInverterSocket(dataservice,onInverterMessage);});
     $rootScope.$on('geospatial-updated', function() { updateMarkers(); });
 
 
