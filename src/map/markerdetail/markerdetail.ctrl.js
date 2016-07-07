@@ -17,7 +17,7 @@ export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdD
 	vm.fieldBlackList = ["Time","Latitude","Longitude"];
 	vm.markerName = apiMarkerData.Name || vm.datasetName;
 	vm.selectedDatasetId = 0;
-  vm.iconName = warningIcon; //will be overwritten by getIcon
+  vm.iconName = warningIcon; 
 	vm.chartAvailable = false;
 	vm.endDate = new Date();
 	vm.startDate = new Date(); vm.startDate.setDate(vm.endDate.getDate()- 2);
@@ -45,13 +45,16 @@ export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdD
 	}
 
 	vm.getData = function() {
-		var lat = apiMarkerData.Latitude;
-		var lon = apiMarkerData.Longitude;
+		var id = apiMarkerData.Id;
 		var endpoint = vm.datasetEndpoints[vm.selectedDatasetId];
 		if(endpoint.Name == vm.datasetName) {vm.markerData = createHumanReadableDetails(apiMarkerData); vm.chartAvailable = false;}
 		else {
-			geoservice.getRecent(endpoint,lat,lon).then(function(response) { 
+			geoservice.getRecent(endpoint,id).then(function(response) { 
 				vm.markerData = createHumanReadableDetails(response); 
+				if(response != null && response.Time != null) {
+					vm.endDate = new Date(response.Time*1000);
+					vm.startDate = new Date((response.Time - (2*86400) )*1000);
+				}
 				vm.chartFields = [];
 				Object.keys(response).reduce(
 					function(arr,value) { 
@@ -66,13 +69,12 @@ export default function MarkerDetailCtrl($scope, $q, $timeout, authservice, $mdD
 
 	//Mocking out functionality
 	vm.renderChart = function() {
-		var lat = apiMarkerData.Latitude;
-		var lon = apiMarkerData.Longitude;
+		var id = apiMarkerData.Id;
 		var endpoint = vm.datasetEndpoints[vm.selectedDatasetId];
 
 		var end = vm.endDate / 1000 | 0;
 	  var start = vm.startDate / 1000 | 0;
-		geoservice.getInTimeRange(endpoint,lat,lon,start,end).then(function(response) { 
+		geoservice.getInTimeRange(endpoint,id,start,end).then(function(response) { 
 			if(response.length > 0) {
 								
 				var chartHeader = ["Time"];
@@ -177,9 +179,9 @@ function convertToDisplayString(key, value) {
 
 	switch (key) {
 		case "Latitude":
-			return value > 0 ? value/1000000 + degreeSymbol + " N" : -1*value/1000000 + degreeSymbol + " S";
+			return value > 0 ? value + degreeSymbol + " N" : -1*value + degreeSymbol + " S";
 		case "Longitude":
-			return value > 0 ? value/1000000 + degreeSymbol + " E" : -1*value/1000000 + degreeSymbol + " W";
+			return value > 0 ? value + degreeSymbol + " E" : -1*value + degreeSymbol + " W";
 		case "ApparentTemperatureMax":
 		case "ApparentTemperatureMin":	
 		case "TemperatureMax":

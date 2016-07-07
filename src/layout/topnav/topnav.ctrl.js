@@ -23,14 +23,12 @@ export default function topNav() {
       vm.notifications = [];
       for (var i = 0; i < notificationData.length; i++) {
         var notification = notificationData[i];
-        notification.fpLat = notification.lat/1000000;
-        notification.fpLon = notification.lon/1000000
         vm.notifications.push(notification);
       }
     }
     
     vm.selectNotification = function(notification) {
-      gmapservice.centerOn(notification.fpLat,notification.fpLon, 12);
+      gmapservice.centerOn(notification.lat,notification.lon, 12);
     }
     
     vm.removeNotification = function(notification) {

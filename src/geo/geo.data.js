@@ -16,12 +16,13 @@ export default function InitMarkerApi(dataservice, onInverterMessage, onInverter
     
   return {
     //Time Series
-    getAtTime: function(dataset,lat,lon,time) {return dataservice.request('retrieving timeseries data', {}, `${dataset}/${lat}/${lon}/${time}`)},
-    getInTimeRange: function(dataset,lat,lon,timeStart,timeEnd) {return dataservice.request('retrieving timeseries data', {}, `${dataset}/${lat}/${lon}/${timeStart}/${timeEnd}`)},
-    getRecent: function(dataset,lat,lon) {return dataservice.request('retrieving timeseries data', {}, `${dataset}/${lat}/${lon}/latest`)},
+    getAtTime: function(dataset,id,time) {return dataservice.request('retrieving timeseries data', {}, `${dataset}/${id}/${time}`)},
+    getInTimeRange: function(dataset,id,timeStart,timeEnd) {return dataservice.request('retrieving timeseries data', {}, `${dataset}/${id}/${timeStart}/${timeEnd}`)},
+    getRecent: function(dataset,id) {return dataservice.request('retrieving timeseries data', {}, `${dataset}/${id}/latest`)},
 
     //Geopatial
     get: function(dataset) {return dataservice.request('retrieving geospatial data',{}, `${dataset}`)},
+    getById: function(dataset,id) {return dataservice.request('retrieving geospatial data',{}, `${dataset}/${id}`)},
     getAtLocation: function(dataset,lat,lon) {return dataservice.request('retrieving geospatial data',{}, `${dataset}/${lat}/${lon}`)},
     getNearLocation: function(dataset,lat,lon) {return dataservice.request('retrieving geospatial data',{}, `${dataset}/${lat}/${lon}/nearby`)},
    

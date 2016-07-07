@@ -66,18 +66,18 @@ export default function GeoService($q,$rootScope,$timeout,dataservice) {
   }
 
   //Time Series
-  function getAtTime(endpoint,lat,lon,time) {
-    return geoApi.getAtTime(endpoint.URI,lat,lon,time).then(function(response){
+  function getAtTime(endpoint,id,time) {
+    return geoApi.getAtTime(endpoint.URI,id,time).then(function(response){
       return response;
     }); 
   }   
-  function getInTimeRange(endpoint,lat,lon,timeStart,timeEnd) {
-    return geoApi.getInTimeRange(endpoint.URI,lat,lon,timeStart,timeEnd).then(function(response){
+  function getInTimeRange(endpoint,id,timeStart,timeEnd) {
+    return geoApi.getInTimeRange(endpoint.URI,id,timeStart,timeEnd).then(function(response){
       return response;
     });   
   }
-  function getRecent(endpoint,lat,lon) {
-    return geoApi.getRecent(endpoint.URI,lat,lon).then(function(response){
+  function getRecent(endpoint,id) {
+    return geoApi.getRecent(endpoint.URI,id).then(function(response){
       return response;
     });
   }

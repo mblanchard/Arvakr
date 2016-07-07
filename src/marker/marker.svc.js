@@ -46,7 +46,7 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,authser
       markers =  markers.concat(d.nodes.map(function(m,i) {
         return  {  
           longitude: m.Longitude, latitude: m.Latitude, 
-          coords:{'longitude': m.Longitude/1000000,'latitude': m.Latitude/1000000}, 
+          coords:{'longitude': m.Longitude,'latitude': m.Latitude}, 
           key: d.Name + '_' + i, description: m.Name, icon: getIconFromDataset(d.Name), dataset: d.Name
         } 
       }) )

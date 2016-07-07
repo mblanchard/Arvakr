@@ -26,7 +26,7 @@ export default function sideNav() {
       
       $mdSidenav('right').close().then(function () {
         var details = geoservice.getCached(dataset,id);
-        gmapservice.centerOn(details.Latitude/1000000,details.Longitude/1000000, 12);
+        gmapservice.centerOn(details.Latitude,details.Longitude, 12);
         vm.selectedMarker = {'details':details, 'dataset':dataset}
         $mdDialog.show({
           scope: $scope,

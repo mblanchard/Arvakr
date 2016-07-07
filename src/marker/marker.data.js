@@ -2,7 +2,7 @@ export default function InitMarkerApi(dataservice, onInverterMessage, onInverter
   
   
   
-  var inverterSocket = dataservice.addSocket('inverter', 'api/inverterNode/MOCK_WS_INVITE/connect', onInverterMessage, onInverterOpen);
+  var inverterSocket = dataservice.addSocket('inverter', 'api/mockSolarSite/MOCK_WS_INVITE/connect', onInverterMessage, onInverterOpen);
  
   return {
     inverterSocket: inverterSocket
