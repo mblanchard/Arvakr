@@ -1,0 +1,17 @@
+<div class="time-slider" ng-class="vm.showControls ? 'time-slider--shown' : 'time-slider--hidden'">
+    <div class="time-slider__content">
+        <span><strong>Selected Time:</strong> {{vm.timeOffsetString}} (+ {{vm.timeOffset}} hours)</span>
+        <md-slider class="time-slider__content__slider" md-discrete ng-model="vm.timeOffset" ng-change="vm.updateTime()" step="1" min="-480" max="24" aria-label="hours"></md-slider>
+        <md-button class="md-accent md-raised time-slider__content__btn"  ng-click="vm.updateMarkers()">Update</md-button>
+    </div>
+
+    <div class="time-slider__tab">
+        <div class="time-slider__tab__left-trapezoid"></div>
+        <div class="time-slider__tab__center">
+
+            <md-button class="time-slider__tab__btn"  ng-click="vm.toggleControls()">&#9776;</md-button>
+
+        </div>
+        <div class="time-slider__tab__right-trapezoid"></div>
+    </div>  
+</div>

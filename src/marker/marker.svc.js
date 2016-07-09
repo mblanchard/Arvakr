@@ -3,6 +3,9 @@ import inverterIcon from './../assets/images/power.svg'
 import inverterWarningIcon from './../assets/images/power_warning.svg'
 import inverterCriticalIcon from './../assets/images/power_critical.svg'
 import solarIcon from './../assets/images/solar.svg'
+import solarWarningIcon from './../assets/images/solar_warning.svg'
+import solarCriticalIcon from './../assets/images/solar_critical.svg'
+import solarNoDataIcon from './../assets/images/solar_no_data.svg'
 
 import InitMockInverterSocket from './marker.data.js'
 
@@ -32,10 +35,26 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,authser
 
   //TODO: Assigning icons to datasets is still handled client-side.  
   //Future-state, server passes URIs in response to initial "getDatasets" call
-  function getIconFromDataset(datasetName) {
+  function getIconFromDataset(datasetName,score) {
     if(datasetName.indexOf('Weather') > -1) return weatherIcon;
     if(datasetName.indexOf('Inverter') > -1) return inverterIcon;
-    if(datasetName.indexOf('Solar') > -1) return solarIcon;
+    if(datasetName.indexOf('Solar') > -1)  {
+      if(score == -1) {
+        return solarNoDataIcon;
+      }
+      else if(score > 0.5) {
+        return solarIcon;
+      }
+      else if(score > 0.25) {
+        return solarWarningIcon;
+      }
+      else {
+        return solarCriticalIcon;
+      }
+
+
+      
+    }
   }
   
   function createMarkersFromGeoServiceNodes() {
@@ -47,7 +66,7 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,authser
         return  {  
           longitude: m.Longitude, latitude: m.Latitude, 
           coords:{'longitude': m.Longitude,'latitude': m.Latitude}, 
-          key: d.Name + '_' + i, description: m.Name, icon: getIconFromDataset(d.Name), dataset: d.Name
+          key: d.Name + '_' + i, description: m.Name, icon: getIconFromDataset(d.Name,m.Score), dataset: d.Name
         } 
       }) )
     });
@@ -66,9 +85,20 @@ export default function MarkerService($q,$rootScope,$timeout,dataservice,authser
     var args = key.split('_');
     return geoservice.getCached(args[0],args[1]);
   }
+
+  function updateTimeSeriesIndicators(timeOffset) {
+    var now = new Date();
+    var then = new Date ( now );
+    then.setHours ( now.getHours() + timeOffset);
+    
+    var dataset = geoservice.getDatasets()[1];
+    var endpoint = dataset.TimeSeriesEndpoints[0];
+    geoservice.updateCachedScores(dataset.Name,endpoint,(then-then%3600000)/1000,function(m) {return m.RealPower/3000;})
+  }
    
   return {
     getMarkers: getMarkers,
-    getMarkerData: getMarkerData
+    getMarkerData: getMarkerData,
+    updateTimeSeriesIndicators: updateTimeSeriesIndicators
   }
 };

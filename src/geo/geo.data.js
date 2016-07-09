@@ -17,6 +17,7 @@ export default function InitMarkerApi(dataservice, onInverterMessage, onInverter
   return {
     //Time Series
     getAtTime: function(dataset,id,time) {return dataservice.request('retrieving timeseries data', {}, `${dataset}/${id}/${time}`)},
+    getAllAtTime: function(dataset,time) {return dataservice.request('retrieving timeseries data', {}, `${dataset}/all/${time}`)},
     getInTimeRange: function(dataset,id,timeStart,timeEnd) {return dataservice.request('retrieving timeseries data', {}, `${dataset}/${id}/${timeStart}/${timeEnd}`)},
     getRecent: function(dataset,id) {return dataservice.request('retrieving timeseries data', {}, `${dataset}/${id}/latest`)},
 

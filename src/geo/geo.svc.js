@@ -24,7 +24,7 @@ export default function GeoService($q,$rootScope,$timeout,dataservice) {
     var promises = datasets.map(function(d) {
       return get(d).then(function(response) {
         d.nodes = response || []; d.nodes.forEach(
-        function(n,i){if(n.Name == null) n.Name = `${d.Name} ${i}`; } 
+        function(n,i){if(n.Name == null) n.Name = `${d.Name} ${i}`; n.Score = 1.0; } 
       );});
     });
     return $q.all(promises).then(function() { $rootScope.$broadcast('geospatial-loaded'); });
@@ -65,9 +65,32 @@ export default function GeoService($q,$rootScope,$timeout,dataservice) {
   
   }
 
+  //Cached Scores
+  function updateCachedScores(datasetName,endpoint,time, scoringFunc) {
+    var dataset = datasets.find(function(d){return d.Name == datasetName});
+    if(dataset != null && dataset.nodes != null) {
+      getAllAtTime(endpoint,time).then(function(response) {
+        if(response != null) {
+          for(var i = 0; i < dataset.nodes.length; i++ ) {
+            var match = response.find(function(d){ return d.Id == dataset.nodes[i].Id;});
+            if(match != null) { dataset.nodes[i].Score = scoringFunc(match);}
+            else  {dataset.nodes[i].Score = -1;}
+          }
+          $rootScope.$broadcast('geospatial-updated');
+        }
+      });
+    }
+    
+  }
+
   //Time Series
   function getAtTime(endpoint,id,time) {
     return geoApi.getAtTime(endpoint.URI,id,time).then(function(response){
+      return response;
+    }); 
+  }   
+  function getAllAtTime(endpoint,time) {
+    return geoApi.getAllAtTime(endpoint.URI,time).then(function(response){
       return response;
     }); 
   }   
@@ -88,9 +111,10 @@ export default function GeoService($q,$rootScope,$timeout,dataservice) {
     getNearLocation: getNearLocation,
     getAtLocation: getAtLocation,
     getAtTime: getAtTime,
+    getAllAtTime: getAllAtTime,
     getInTimeRange: getInTimeRange,
     getRecent: getRecent,
-
+    updateCachedScores: updateCachedScores,
     getDatasets: getDatasets,
     getActiveDatasets: getActiveDatasets,
     toggleDataset: toggleDataset
