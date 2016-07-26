@@ -20,6 +20,10 @@
         </a>
         <md-menu-content width="4">
           <md-menu-item>
+            <md-button href='/#/scoring'>Scoring</md-button>
+          </md-menu-item>
+
+          <md-menu-item>
             <md-button ng-click="vm.logout()"> Log out </md-button>
           </md-menu-item>
         </md-menu-content>
@@ -37,9 +41,12 @@
         </md-button>
         </a>
         <md-menu-content width="4" layout="column" class="notification">
+
           <md-menu-item ng-repeat="notification in vm.notifications" layout="row">
-            <md-button md-prevent-menu-close="md-prevent-menu-close" ng-click="vm.selectNotification(notification)" flex="75">{{notification.description}}</md-button>
-            <span>
+            <span flex=80>
+              <md-button md-prevent-menu-close="md-prevent-menu-close" ng-click="vm.selectNotification(notification)">{{notification.description}}</md-button>
+            </span>
+            <span flex=20>
               <md-button md-prevent-menu-close="md-prevent-menu-close" ng-click="vm.removeNotification(notification)"><span md-prevent-menu-close>close</span></md-button>
             </span>
             

@@ -24,12 +24,13 @@ import map from './map/map.module';
 import charts from './charts/charts.module';
 import marker from'./marker/marker.module';
 import layout from './layout/layout.module';
+import scoring from './scoring/scoring.module';
 import geo from './geo/geo.module';
 
 const DEBUG = false;
 
 const app = angular
-    .module('app', [uirouter,core,geo,gmap,marker,map,charts,ngMaterial,layout])
+    .module('app', [uirouter,core,geo,gmap,marker,map,charts,scoring,ngMaterial,layout])
     .config(['$mdThemingProvider',theming])
     .config(['$urlRouterProvider','$stateProvider',routing])
     .config(['$httpProvider',addInterceptors])

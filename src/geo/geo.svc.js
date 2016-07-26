@@ -58,11 +58,9 @@ export default function GeoService($q,$rootScope,$timeout,dataservice) {
   }
   
   function getAtLocation(endpoint,lat,lon) {
-
     return geoApi.getAtLocation(endpoint.URI,lat,lon).then(function(response){
       return response;
-    });
-  
+    });  
   }
 
   //Cached Scores
@@ -89,16 +87,19 @@ export default function GeoService($q,$rootScope,$timeout,dataservice) {
       return response;
     }); 
   }   
+
   function getAllAtTime(endpoint,time) {
     return geoApi.getAllAtTime(endpoint.URI,time).then(function(response){
       return response;
     }); 
-  }   
+  } 
+
   function getInTimeRange(endpoint,id,timeStart,timeEnd) {
     return geoApi.getInTimeRange(endpoint.URI,id,timeStart,timeEnd).then(function(response){
       return response;
     });   
   }
+  
   function getRecent(endpoint,id) {
     return geoApi.getRecent(endpoint.URI,id).then(function(response){
       return response;
