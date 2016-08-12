@@ -11,19 +11,6 @@ import InitMockInverterSocket from './marker.data.js'
 
 export default function MarkerService($q,$rootScope,$timeout,dataservice,authservice, gmapservice, geoservice) { 
   var markers = [];
-  
-  //TODO: Strip out mock inverter events
-  function onInverterMessage(messageEvent){
-    var args = messageEvent.data.split('_');
-    
-    var matchingIndex = markers.findIndex(
-      function(inv){return inv.latitude == args[0] && inv.longitude == args[1] && inv.dataset == "InverterNode"}
-    );
-    if(matchingIndex !== -1) {
-      var mockVal = args[3];
-      markers[matchingIndex].icon = mockVal > 0.2? inverterIcon: mockVal > 0.1? inverterWarningIcon: inverterCriticalIcon;
-    }
-  } 
 
   function updateMarkers() {
       createMarkersFromGeoServiceNodes();

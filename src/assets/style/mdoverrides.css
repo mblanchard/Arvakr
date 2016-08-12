@@ -1,0 +1,24 @@
+/* Overrides of default ng-material styles*/
+
+.md-headline {
+  margin-left: 20px;
+}
+
+.md-button {
+  min-width: 48px;
+  min-height: 24px;
+  padding-top: 8px;
+}    
+
+.md-toolbar-tools {
+  height: 64px; max-height: 64px;
+}
+
+md-menu-bar md-menu.md-open > button {
+  background-color: rgba(255,255,255,0.2);
+}
+
+md-menu-content > md-menu-item  .md-button > span {
+  color: #222;
+  line-height: initial;
+}

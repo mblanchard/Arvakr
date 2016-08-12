@@ -4,21 +4,21 @@
           <h2>Login</h2>
         </div>
       </md-toolbar>
-      <md-content style="max-width: 350px; max-height: 350px;">
-        <div style="max-width: 350px; max-height: 350px; margin-left: 20px; margin-right: 20px;">
-          <md-input-container>
+      <md-content >
+        <div class="login__container">
+          <md-input-container class="md-block login__input">
             <label>username</label>
             <input ng-model="vm.username">
           </md-input-container>
-          <md-input-container>
+          <md-input-container class="md-block login__input">
             <label>password</label>
             <input type="password" ng-model="vm.password">
           </md-input-container>
         </div>
       </md-content>
-    <md-dialog-actions layout="row">
+    <md-dialog-actions layout="row" class="login__container">
       <span flex></span>
-      <md-button ng-click="vm.closeDialog()">Cancel</md-button>
-      <md-button ng-click="vm.login()" style="margin-right: 20px;">Ok</md-button>
+      <md-button ng-click="vm.closeDialog()" class="login__input">Cancel</md-button>
+      <md-button ng-click="vm.login()" class="login__input">Ok</md-button>
     </md-dialog-actions>
 </md-dialog>

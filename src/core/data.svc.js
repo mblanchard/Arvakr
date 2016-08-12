@@ -2,10 +2,10 @@ export default function DataService($http, $q, $timeout, busyservice) {
     
   var endpoints = {}
   var sockets = {}
-  //var DEFAULT_API_BASE_URL = "http://localhost:8485/";
-  //var DEFAULT_WS_BASE_URL = "ws://localhost:8485/";
-  var DEFAULT_API_BASE_URL = "https://alsvior.azurewebsites.net/";
-  var DEFAULT_WS_BASE_URL = "wss://alsvior.azurewebsites.net/";
+  var DEFAULT_API_BASE_URL = "http://localhost:8485/";
+  var DEFAULT_WS_BASE_URL = "ws://localhost:8485/";
+  //var DEFAULT_API_BASE_URL = "https://alsvior.azurewebsites.net/";
+  //var DEFAULT_WS_BASE_URL = "wss://alsvior.azurewebsites.net/";
   
   function generateUrl(relativeUrl) {
     return DEFAULT_API_BASE_URL + relativeUrl;

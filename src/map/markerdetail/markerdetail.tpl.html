@@ -1,63 +1,53 @@
 <md-dialog id="marker-detail-dialog" aria-label="Login" ng-cloak ng-controller="MarkerDetailCtrl as vm">
-      <md-toolbar>
-        <div class="md-toolbar-tools">
-          <h2>{{vm.markerName}} </h2>
-          
-          <span flex></span>
-          <md-button ng-click="vm.closeDialog()">Close</md-button>
-          <div id="icon-div"></div>
-
-        </div>
-      </md-toolbar>
-        <md-tabs md-dynamic-height md-border-bottom class="md-accent" style="width: 500px;">
-
-          <md-tab label="Recent Data">
-            <md-content class="md-padding" style="max-height: 40vh;">
-              <md-list>
-                <md-list-item ng-repeat="(key, value) in vm.markerData">
-                  <p> <strong>{{key}}</strong><br/>{{value}}</p>
-                </md-list-item>
-              </md-list>            
-            </md-content>
-          </md-tab>
-
-
-
-          <md-tab label="Query Config">
-            <md-content class="md-padding" style="max-height: 40vh;">
-              <h3>Dataset</h3>
-              <md-select ng-model="vm.selectedDatasetId"  ng-change="vm.getData()">
-                <md-option ng-repeat="dataset in vm.datasetEndpoints track by $index" value="{{$index}}">
-                  {{dataset.DisplayName}}
-                </md-option>
-              </md-select>
-              <div ng-show="vm.chartAvailable">
-                <h3> Chart Range</h3>
-                <md-datepicker ng-model="vm.startDate" md-placeholder="Enter date"></md-datepicker>
-                <md-datepicker ng-model="vm.endDate" md-placeholder="Enter date"></md-datepicker>
-                <h3> Chart Fields</h3>
-                <div class= flex="100" ng-repeat="item in vm.chartFields">
-                  <md-checkbox ng-model="item.isActive">
-                  {{ item.name }}
-                  </md-checkbox>
-                </div>
-              </div>
-            </md-content>
-          </md-tab>
-
-          <md-tab label="Chart" ng-disabled="!vm.chartAvailable" md-on-select="vm.renderChart()">
-            <md-content class="md-padding" style="max-height: 40vh;">
-              <md-button ng-click="vm.renderChart()"></md-button>
-              <div google-chart chart="chart" style="width=100% overflow: hidden; margin: 0"></div>
-            </md-content>
-          </md-tab>
-
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>{{vm.markerName}} </h2>
       
-    <md-dialog-actions style="height:60px; width: 100%; background-color: #DDD">
-      <div layout="row">
-        <span flex></span>
-        <md-button ng-click="vm.closeDialog()">Close</md-button>
-      </div>
+      <span flex></span>
+      <md-button ng-click="vm.closeDialog()">Close</md-button>
+      <div id="icon-div"></div>
 
-    </md-dialog-actions>
+    </div>
+  </md-toolbar>
+  <md-tabs md-dynamic-height md-border-bottom class="md-accent marker-detail__tab-container">
+
+    <md-tab label="Recent Data">
+      <md-content class="md-padding marker-detail__tab">
+        <md-list>
+          <md-list-item ng-repeat="(key, value) in vm.markerData">
+            <p> <strong>{{key}}</strong><br/>{{value}}</p>
+          </md-list-item>
+        </md-list>            
+      </md-content>
+    </md-tab>
+
+    <md-tab label="Query Config">
+      <md-content class="md-padding marker-detail__tab">
+        <h3>Dataset</h3>
+        <md-select ng-model="vm.selectedDatasetId"  ng-change="vm.getData()">
+          <md-option ng-repeat="dataset in vm.datasetEndpoints track by $index" value="{{$index}}">
+            {{dataset.DisplayName}}
+          </md-option>
+        </md-select>
+        <div ng-show="vm.chartAvailable">
+          <h3> Chart Range</h3>
+          <md-datepicker ng-model="vm.startDate" md-placeholder="Enter date"></md-datepicker>
+          <md-datepicker ng-model="vm.endDate" md-placeholder="Enter date"></md-datepicker>
+          <h3> Chart Fields</h3>
+          <div class= flex="100" ng-repeat="item in vm.chartFields">
+            <md-checkbox ng-model="item.isActive">
+              {{ item.name }}
+            </md-checkbox>
+          </div>
+        </div>
+      </md-content>
+    </md-tab>
+
+    <md-tab label="Chart" ng-disabled="!vm.chartAvailable" md-on-select="vm.renderChart()">
+      <md-content class="md-padding marker-detail__tab">
+        <md-button ng-click="vm.renderChart()"></md-button>
+        <div google-chart chart="chart" class="marker-detail__chart"></div>
+      </md-content>
+    </md-tab>
+  </md-tabs>
 </md-dialog>

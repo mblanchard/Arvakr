@@ -1,0 +1,66 @@
+/* Time Slider Control */
+
+.time-slider {
+  position:absolute;
+  width:40%;
+  min-width: 400px;
+  left:20%;
+  z-index:1; 
+  top:6px;
+}
+
+.time-slider--shown {
+  top: -16px;
+  transition: top 0.25s ease-out;
+}
+
+.time-slider--hidden {
+  top: -120px;
+  transition: top 0.25s ease-in;
+}
+
+
+.time-slider__content {
+  border: 3px solid rgb(13,71,161);
+  border-bottom-width: 4px; 
+  border-bottom-right-radius: 5px;
+  box-shadow: inset 0px 5px 1px rgba(0, 0, 0, 0.1); 
+  background-color: rgba(240,240,240,0.92); 
+  width: 100%;
+
+  height: 75px;
+  overflow: hidden;
+  padding:  35px 5% 0px;
+}
+
+.time-slider__content__slider {
+  float: left; width: 60%;
+}
+.time-slider__content__btn {
+  float: left; width: 30%;
+  padding-top: 0px;
+}
+
+.time-slider__tab {
+  width:105px;
+}
+
+.time-slider__tab__left-trapezoid {
+  float: left; border-left: 20px solid transparent; border-top: 28px solid rgb(13,71,161);
+}
+
+.time-slider__tab__right-trapezoid {
+  float: left; border-right: 20px solid transparent; border-top: 28px solid rgb(13,71,161);
+}
+
+.time-slider__tab__center {
+  float: left; width: 65px; background-color: rgb(13,71,161);height: 28px;
+  border-bottom: 2px solid rgb(13,71,161);
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.time-slider__tab__btn {
+  padding: 0; margin-top: 0; color: #FFF;
+}
+/* END: Time Slider Control */

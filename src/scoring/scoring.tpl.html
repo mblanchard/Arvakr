@@ -6,14 +6,15 @@
             <md-list-item ng-repeat="dataset in vm.datasets" flex="100" layout-wrap>
                 <span flex="20"><h3>{{dataset.DisplayName}}</h3></span>
                 <md-select flex="65" ng-model="dataset.activeTimeSeries" placeholder="select a timeseries dataset...">
-                    <md-option  ng-repeat="timeSeries in dataset.TimeSeriesEndpoints" value="{{timeSeries}}">{{timeSeries.DisplayName}}</md-option>
+                    <md-option  ng-repeat="timeSeries in dataset.TimeSeriesEndpoints track by $index" value="{{$index}}">{{timeSeries.DisplayName}}</md-option>
                 </md-select>
 
-                <span flex="15">
-                    <md-button class="md-secondary">Edit</md-button>
+                <span flex="15" ng-if="dataset.activeTimeSeries != null">
+                    <md-button class="md-secondary" ng-click="vm.buildQueryConfig(dataset)">Edit</md-button>
                 </span>
-                <span flex="50" ng-if="dataset.activeTimeSeries != null">
-                    Time Series is set
+                <span flex="80" ng-if="dataset.activeTimeSeries != null">
+                    
+                    <!-- <div ng-repeat> -->
                 </span>
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>

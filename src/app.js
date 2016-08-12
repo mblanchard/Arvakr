@@ -1,9 +1,12 @@
 //Styles
 import 'angular-material/angular-material.min.css';
 import './assets/style/app.css';
-import './assets/style/spinner.css';
-import './assets/style/topnav.css';
+import './assets/style/base.css';
 import './assets/style/charts.css'
+import './assets/style/mdoverrides.css'
+import './assets/style/spinner.css';
+import './assets/style/timeslider.css';
+import './assets/style/topnav.css';
 
 //External Dependencies
 import angular from 'angular';
