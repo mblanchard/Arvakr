@@ -31,7 +31,7 @@
     "angular-google-maps": "2.3.2", 
     "angular-material": "^1.0.9",
     "angular-simple-logger": "^0.1.7",
-    "angular-ui-router": "^0.2.15",
+    "angular-ui-router": "^1.0.23",
     "autoprefixer-core": "^5.2.0",
     "babel-core": "^5.5.8",
     "babel-loader": "^5.1.4",
