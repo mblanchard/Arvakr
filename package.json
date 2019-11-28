@@ -56,7 +56,7 @@
     "angular-mocks": "^1.4.1",
     "asar": "^0.11.0",
     "electron-packager": "^7.0.1",
-    "electron-prebuilt": "^0.37.7",
+    "electron-prebuilt": "^1.4.13",
     "isparta-instrumenter-loader": "^0.2.1",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.2",
